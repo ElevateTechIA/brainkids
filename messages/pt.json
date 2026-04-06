@@ -1,0 +1,145 @@
+{
+  "app": {
+    "name": "BrainKids",
+    "tagline": "Aprenda brincando"
+  },
+  "nav": {
+    "home": "Inicio",
+    "reading": "Leitura",
+    "math": "Matem.",
+    "physics": "Fisica",
+    "chemistry": "Quimica",
+    "profile": "Perfil"
+  },
+  "home": {
+    "welcome": "Ola, {name}!",
+    "welcomeDefault": "Ola, Explorador!",
+    "chooseSubject": "Escolha uma materia",
+    "chooseGame": "Escolha um jogo",
+    "dailyChallenge": "Desafio do Dia",
+    "streak": "{count} dias seguidos!",
+    "level": "Nivel {level}",
+    "xp": "{xp} XP"
+  },
+  "subjects": {
+    "reading": {
+      "title": "Leitura",
+      "description": "Aprenda letras, palavras e a ler"
+    },
+    "math": {
+      "title": "Matematica",
+      "description": "Numeros, somas, subtracoes e mais"
+    },
+    "physics": {
+      "title": "Fisica",
+      "description": "Gravidade, forca e experimentos"
+    },
+    "chemistry": {
+      "title": "Quimica",
+      "description": "Elementos, misturas e reacoes"
+    }
+  },
+  "games": {
+    "wordTrain": {
+      "title": "Trem de Palavras",
+      "description": "Construa palavras arrastando letras"
+    },
+    "letterKitchen": {
+      "title": "Cozinha de Letras",
+      "description": "Cozinhe palavras com letras ingredientes"
+    },
+    "sightWordSplat": {
+      "title": "Splat de Palavras",
+      "description": "Encontre a palavra correta"
+    },
+    "numberMonster": {
+      "title": "Monstro dos Numeros",
+      "description": "Alimente o monstro com a resposta certa"
+    },
+    "mathTower": {
+      "title": "Torre Matematica",
+      "description": "Empilhe blocos resolvendo problemas"
+    },
+    "timesTable": {
+      "title": "Batalha das Tabuadas",
+      "description": "Derrote inimigos com multiplicacoes"
+    },
+    "rampLab": {
+      "title": "Lab de Rampas",
+      "description": "Experimente com gravidade e atrito"
+    },
+    "catapult": {
+      "title": "Desafio Catapulta",
+      "description": "Lance projeteis no alvo"
+    },
+    "balanceLab": {
+      "title": "Lab de Equilibrio",
+      "description": "Equilibre objetos na balanca"
+    },
+    "bridgeBuilder": {
+      "title": "Construtor de Pontes",
+      "description": "Construa pontes resistentes"
+    },
+    "elementMatch": {
+      "title": "Elementos Match",
+      "description": "Combine elementos com seus simbolos"
+    },
+    "moleculeBuilder": {
+      "title": "Construtor de Moleculas",
+      "description": "Construa moleculas combinando atomos"
+    },
+    "reactionLab": {
+      "title": "Lab de Reacoes",
+      "description": "Misture substancias e veja o que acontece"
+    }
+  },
+  "auth": {
+    "signInGoogle": "Entrar com Google",
+    "signInGuest": "Jogar como convidado",
+    "signOut": "Sair",
+    "welcome": "Bem-vindo ao BrainKids!",
+    "subtitle": "Jogos divertidos para aprender",
+    "email": "Email",
+    "password": "Senha",
+    "name": "Nome",
+    "signIn": "Entrar",
+    "signUp": "Criar conta",
+    "noAccount": "Nao tem conta?",
+    "hasAccount": "Ja tem conta?",
+    "orContinueWith": "ou continue com",
+    "errorInvalidEmail": "Email invalido",
+    "errorWrongPassword": "Senha incorreta",
+    "errorEmailInUse": "Este email ja esta registrado",
+    "errorWeakPassword": "A senha deve ter pelo menos 6 caracteres",
+    "errorGeneric": "Erro ao entrar"
+  },
+  "game": {
+    "score": "Pontos",
+    "stars": "Estrelas",
+    "level": "Nivel",
+    "correct": "Correto!",
+    "tryAgain": "Tente de novo!",
+    "great": "Otimo!",
+    "awesome": "Incrivel!",
+    "perfect": "Perfeito!",
+    "nextLevel": "Proximo nivel",
+    "playAgain": "Jogar de novo",
+    "back": "Voltar"
+  },
+  "profile": {
+    "title": "Meu Perfil",
+    "level": "Nivel {level}",
+    "totalXp": "{xp} XP Total",
+    "streak": "Sequencia: {count} dias",
+    "badges": "Minhas Insignias",
+    "noBadges": "Jogue para ganhar insignias!"
+  },
+  "parent": {
+    "title": "Painel dos Pais",
+    "gate": "Para acessar, resolva: {problem}",
+    "timeSpent": "Tempo jogado",
+    "progress": "Progresso",
+    "strengths": "Pontos fortes",
+    "needsPractice": "Precisa praticar"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "app": {
+    "name": "BrainKids",
+    "tagline": "Aprende jugando"
+  },
+  "nav": {
+    "home": "Inicio",
+    "reading": "Lectura",
+    "math": "Mates",
+    "physics": "Fisica",
+    "chemistry": "Quimica",
+    "profile": "Perfil"
+  },
+  "home": {
+    "welcome": "Hola, {name}!",
+    "welcomeDefault": "Hola, Explorador!",
+    "chooseSubject": "Elige una materia",
+    "chooseGame": "Elige un juego",
+    "dailyChallenge": "Reto del Dia",
+    "streak": "{count} dias seguidos!",
+    "level": "Nivel {level}",
+    "xp": "{xp} XP"
+  },
+  "subjects": {
+    "reading": {
+      "title": "Lectura",
+      "description": "Aprende letras, palabras y a leer"
+    },
+    "math": {
+      "title": "Matematicas",
+      "description": "Numeros, sumas, restas y mas"
+    },
+    "physics": {
+      "title": "Fisica",
+      "description": "Gravedad, fuerza y experimentos"
+    },
+    "chemistry": {
+      "title": "Quimica",
+      "description": "Elementos, mezclas y reacciones"
+    }
+  },
+  "games": {
+    "wordTrain": {
+      "title": "Tren de Palabras",
+      "description": "Construye palabras arrastrando letras"
+    },
+    "letterKitchen": {
+      "title": "Cocina de Letras",
+      "description": "Cocina palabras con letras ingrediente"
+    },
+    "sightWordSplat": {
+      "title": "Splat de Palabras",
+      "description": "Encuentra la palabra correcta"
+    },
+    "numberMonster": {
+      "title": "Monstruo de Numeros",
+      "description": "Alimenta al monstruo con la respuesta correcta"
+    },
+    "mathTower": {
+      "title": "Torre Matematica",
+      "description": "Apila bloques resolviendo problemas"
+    },
+    "timesTable": {
+      "title": "Batalla de Tablas",
+      "description": "Derrota enemigos con multiplicaciones"
+    },
+    "rampLab": {
+      "title": "Lab de Rampas",
+      "description": "Experimenta con gravedad y friccion"
+    },
+    "catapult": {
+      "title": "Desafio Catapulta",
+      "description": "Lanza proyectiles al objetivo"
+    },
+    "balanceLab": {
+      "title": "Lab de Balance",
+      "description": "Equilibra objetos en la balanza"
+    },
+    "bridgeBuilder": {
+      "title": "Constructor de Puentes",
+      "description": "Construye puentes resistentes"
+    },
+    "elementMatch": {
+      "title": "Elementos Match",
+      "description": "Empareja elementos con sus simbolos"
+    },
+    "moleculeBuilder": {
+      "title": "Constructor de Moleculas",
+      "description": "Construye moleculas combinando atomos"
+    },
+    "reactionLab": {
+      "title": "Lab de Reacciones",
+      "description": "Mezcla sustancias y observa que pasa"
+    }
+  },
+  "auth": {
+    "signInGoogle": "Entrar con Google",
+    "signInGuest": "Jugar como invitado",
+    "signOut": "Cerrar sesion",
+    "welcome": "Bienvenido a BrainKids!",
+    "subtitle": "Juegos divertidos para aprender",
+    "email": "Correo electronico",
+    "password": "Contrasena",
+    "name": "Nombre",
+    "signIn": "Iniciar sesion",
+    "signUp": "Crear cuenta",
+    "noAccount": "No tienes cuenta?",
+    "hasAccount": "Ya tienes cuenta?",
+    "orContinueWith": "o continua con",
+    "errorInvalidEmail": "Correo invalido",
+    "errorWrongPassword": "Contrasena incorrecta",
+    "errorEmailInUse": "Este correo ya esta registrado",
+    "errorWeakPassword": "La contrasena debe tener al menos 6 caracteres",
+    "errorGeneric": "Error al iniciar sesion"
+  },
+  "game": {
+    "score": "Puntos",
+    "stars": "Estrellas",
+    "level": "Nivel",
+    "correct": "Correcto!",
+    "tryAgain": "Intenta de nuevo!",
+    "great": "Genial!",
+    "awesome": "Increible!",
+    "perfect": "Perfecto!",
+    "nextLevel": "Siguiente nivel",
+    "playAgain": "Jugar de nuevo",
+    "back": "Volver"
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "level": "Nivel {level}",
+    "totalXp": "{xp} XP Total",
+    "streak": "Racha: {count} dias",
+    "badges": "Mis Insignias",
+    "noBadges": "Juega para ganar insignias!"
+  },
+  "parent": {
+    "title": "Panel de Padres",
+    "gate": "Para acceder, resuelve: {problem}",
+    "timeSpent": "Tiempo jugado",
+    "progress": "Progreso",
+    "strengths": "Fortalezas",
+    "needsPractice": "Necesita practica"
+  }
+}

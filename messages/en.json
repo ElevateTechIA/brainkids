@@ -1,0 +1,145 @@
+{
+  "app": {
+    "name": "BrainKids",
+    "tagline": "Learn by playing"
+  },
+  "nav": {
+    "home": "Home",
+    "reading": "Reading",
+    "math": "Math",
+    "physics": "Physics",
+    "chemistry": "Chemistry",
+    "profile": "Profile"
+  },
+  "home": {
+    "welcome": "Hi, {name}!",
+    "welcomeDefault": "Hi, Explorer!",
+    "chooseSubject": "Choose a subject",
+    "chooseGame": "Choose a game",
+    "dailyChallenge": "Daily Challenge",
+    "streak": "{count} days in a row!",
+    "level": "Level {level}",
+    "xp": "{xp} XP"
+  },
+  "subjects": {
+    "reading": {
+      "title": "Reading",
+      "description": "Learn letters, words and how to read"
+    },
+    "math": {
+      "title": "Math",
+      "description": "Numbers, addition, subtraction and more"
+    },
+    "physics": {
+      "title": "Physics",
+      "description": "Gravity, forces and experiments"
+    },
+    "chemistry": {
+      "title": "Chemistry",
+      "description": "Elements, mixtures and reactions"
+    }
+  },
+  "games": {
+    "wordTrain": {
+      "title": "Word Train",
+      "description": "Build words by dragging letters"
+    },
+    "letterKitchen": {
+      "title": "Letter Kitchen",
+      "description": "Cook words with letter ingredients"
+    },
+    "sightWordSplat": {
+      "title": "Sight Word Splat",
+      "description": "Find the correct word"
+    },
+    "numberMonster": {
+      "title": "Number Monster",
+      "description": "Feed the monster the right answer"
+    },
+    "mathTower": {
+      "title": "Math Tower",
+      "description": "Stack blocks by solving problems"
+    },
+    "timesTable": {
+      "title": "Times Table Battle",
+      "description": "Defeat enemies with multiplication"
+    },
+    "rampLab": {
+      "title": "Ramp Lab",
+      "description": "Experiment with gravity and friction"
+    },
+    "catapult": {
+      "title": "Catapult Challenge",
+      "description": "Launch projectiles at targets"
+    },
+    "balanceLab": {
+      "title": "Balance Lab",
+      "description": "Balance objects on the scale"
+    },
+    "bridgeBuilder": {
+      "title": "Bridge Builder",
+      "description": "Build strong bridges"
+    },
+    "elementMatch": {
+      "title": "Element Match",
+      "description": "Match elements with their symbols"
+    },
+    "moleculeBuilder": {
+      "title": "Molecule Builder",
+      "description": "Build molecules by combining atoms"
+    },
+    "reactionLab": {
+      "title": "Reaction Lab",
+      "description": "Mix substances and see what happens"
+    }
+  },
+  "auth": {
+    "signInGoogle": "Sign in with Google",
+    "signInGuest": "Play as guest",
+    "signOut": "Sign out",
+    "welcome": "Welcome to BrainKids!",
+    "subtitle": "Fun games to learn",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "orContinueWith": "or continue with",
+    "errorInvalidEmail": "Invalid email",
+    "errorWrongPassword": "Wrong password",
+    "errorEmailInUse": "This email is already registered",
+    "errorWeakPassword": "Password must be at least 6 characters",
+    "errorGeneric": "Error signing in"
+  },
+  "game": {
+    "score": "Score",
+    "stars": "Stars",
+    "level": "Level",
+    "correct": "Correct!",
+    "tryAgain": "Try again!",
+    "great": "Great!",
+    "awesome": "Awesome!",
+    "perfect": "Perfect!",
+    "nextLevel": "Next level",
+    "playAgain": "Play again",
+    "back": "Back"
+  },
+  "profile": {
+    "title": "My Profile",
+    "level": "Level {level}",
+    "totalXp": "{xp} Total XP",
+    "streak": "Streak: {count} days",
+    "badges": "My Badges",
+    "noBadges": "Play to earn badges!"
+  },
+  "parent": {
+    "title": "Parent Dashboard",
+    "gate": "To access, solve: {problem}",
+    "timeSpent": "Time played",
+    "progress": "Progress",
+    "strengths": "Strengths",
+    "needsPractice": "Needs practice"
+  }
+}

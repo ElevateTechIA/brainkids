@@ -1,0 +1,34 @@
+export const colors = {
+  primary: '#0a6375',
+  primaryLight: '#4ecdc4',
+  primaryDark: '#074a58',
+  secondary: '#ff6b6b',
+  secondaryLight: '#ff8e8e',
+  accent: '#ffd93d',
+  accentDark: '#f0c400',
+
+  // Subject colors
+  reading: '#00b894',
+  readingLight: '#55efc4',
+  math: '#0984e3',
+  mathLight: '#74b9ff',
+  physics: '#6c5ce7',
+  physicsLight: '#a29bfe',
+  chemistry: '#e17055',
+  chemistryLight: '#fab1a0',
+
+  // Backgrounds
+  background: '#fff9f0',
+  cardBg: '#ffffff',
+  cardBgHover: '#fffaf5',
+
+  // Semantic
+  success: '#00b894',
+  error: '#ff6b6b',
+  warning: '#ffd93d',
+
+  // Text
+  textPrimary: '#2d3436',
+  textSecondary: '#636e72',
+  textMuted: '#b2bec3',
+} as const;

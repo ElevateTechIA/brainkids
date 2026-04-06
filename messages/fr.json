@@ -1,0 +1,145 @@
+{
+  "app": {
+    "name": "BrainKids",
+    "tagline": "Apprends en jouant"
+  },
+  "nav": {
+    "home": "Accueil",
+    "reading": "Lecture",
+    "math": "Maths",
+    "physics": "Physique",
+    "chemistry": "Chimie",
+    "profile": "Profil"
+  },
+  "home": {
+    "welcome": "Salut, {name} !",
+    "welcomeDefault": "Salut, Explorateur !",
+    "chooseSubject": "Choisis une matiere",
+    "chooseGame": "Choisis un jeu",
+    "dailyChallenge": "Defi du Jour",
+    "streak": "{count} jours de suite !",
+    "level": "Niveau {level}",
+    "xp": "{xp} XP"
+  },
+  "subjects": {
+    "reading": {
+      "title": "Lecture",
+      "description": "Apprends les lettres, les mots et a lire"
+    },
+    "math": {
+      "title": "Mathematiques",
+      "description": "Nombres, additions, soustractions et plus"
+    },
+    "physics": {
+      "title": "Physique",
+      "description": "Gravite, forces et experiences"
+    },
+    "chemistry": {
+      "title": "Chimie",
+      "description": "Elements, melanges et reactions"
+    }
+  },
+  "games": {
+    "wordTrain": {
+      "title": "Train de Mots",
+      "description": "Construis des mots en glissant des lettres"
+    },
+    "letterKitchen": {
+      "title": "Cuisine des Lettres",
+      "description": "Cuisine des mots avec des lettres ingredients"
+    },
+    "sightWordSplat": {
+      "title": "Splat de Mots",
+      "description": "Trouve le bon mot"
+    },
+    "numberMonster": {
+      "title": "Monstre des Nombres",
+      "description": "Nourris le monstre avec la bonne reponse"
+    },
+    "mathTower": {
+      "title": "Tour Mathematique",
+      "description": "Empile des blocs en resolvant des problemes"
+    },
+    "timesTable": {
+      "title": "Bataille des Tables",
+      "description": "Bats les ennemis avec les multiplications"
+    },
+    "rampLab": {
+      "title": "Labo de Rampes",
+      "description": "Experimente avec la gravite et le frottement"
+    },
+    "catapult": {
+      "title": "Defi Catapulte",
+      "description": "Lance des projectiles vers la cible"
+    },
+    "balanceLab": {
+      "title": "Labo d'Equilibre",
+      "description": "Equilibre des objets sur la balance"
+    },
+    "bridgeBuilder": {
+      "title": "Constructeur de Ponts",
+      "description": "Construis des ponts solides"
+    },
+    "elementMatch": {
+      "title": "Elements Match",
+      "description": "Associe les elements a leurs symboles"
+    },
+    "moleculeBuilder": {
+      "title": "Constructeur de Molecules",
+      "description": "Construis des molecules en combinant des atomes"
+    },
+    "reactionLab": {
+      "title": "Labo de Reactions",
+      "description": "Melange des substances et observe ce qui se passe"
+    }
+  },
+  "auth": {
+    "signInGoogle": "Se connecter avec Google",
+    "signInGuest": "Jouer en tant qu'invite",
+    "signOut": "Se deconnecter",
+    "welcome": "Bienvenue sur BrainKids !",
+    "subtitle": "Des jeux amusants pour apprendre",
+    "email": "Email",
+    "password": "Mot de passe",
+    "name": "Nom",
+    "signIn": "Se connecter",
+    "signUp": "Creer un compte",
+    "noAccount": "Pas de compte ?",
+    "hasAccount": "Deja un compte ?",
+    "orContinueWith": "ou continuer avec",
+    "errorInvalidEmail": "Email invalide",
+    "errorWrongPassword": "Mot de passe incorrect",
+    "errorEmailInUse": "Cet email est deja enregistre",
+    "errorWeakPassword": "Le mot de passe doit avoir au moins 6 caracteres",
+    "errorGeneric": "Erreur de connexion"
+  },
+  "game": {
+    "score": "Points",
+    "stars": "Etoiles",
+    "level": "Niveau",
+    "correct": "Correct !",
+    "tryAgain": "Reessaie !",
+    "great": "Super !",
+    "awesome": "Incroyable !",
+    "perfect": "Parfait !",
+    "nextLevel": "Niveau suivant",
+    "playAgain": "Rejouer",
+    "back": "Retour"
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "level": "Niveau {level}",
+    "totalXp": "{xp} XP Total",
+    "streak": "Serie : {count} jours",
+    "badges": "Mes Badges",
+    "noBadges": "Joue pour gagner des badges !"
+  },
+  "parent": {
+    "title": "Tableau de Bord Parents",
+    "gate": "Pour acceder, resous : {problem}",
+    "timeSpent": "Temps de jeu",
+    "progress": "Progres",
+    "strengths": "Points forts",
+    "needsPractice": "A pratiquer"
+  }
+}
