@@ -8,6 +8,7 @@ import { colors } from '@/lib/theme/colors';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import GridOnRoundedIcon from '@mui/icons-material/GridOnRounded';
+import DirectionsBoatRoundedIcon from '@mui/icons-material/DirectionsBoatRounded';
 
 const games = [
   {
@@ -30,6 +31,13 @@ const games = [
     path: '/home/math/times-table',
     stars: 0,
     locked: true,
+  },
+  {
+    key: 'battleship',
+    icon: <DirectionsBoatRoundedIcon fontSize="large" />,
+    path: '/home/math/battleship',
+    stars: 0,
+    locked: false,
   },
 ];
 

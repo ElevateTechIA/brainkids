@@ -91,6 +91,21 @@
     "reactionLab": {
       "title": "Reaction Lab",
       "description": "Mix substances and see what happens"
+    },
+    "battleship": {
+      "title": "Battleship",
+      "description": "Sink your rival's fleet",
+      "player": "Player",
+      "placeYourShips": "Place your ships",
+      "yourTurn": "It's your turn to attack",
+      "passDevice": "Pass the device to the other player",
+      "ready": "I'm ready!",
+      "rotate": "Rotate",
+      "random": "Random",
+      "confirm": "Confirm",
+      "enemyWaters": "Enemy waters",
+      "myFleet": "My fleet",
+      "wins": "wins"
     }
   },
   "auth": {

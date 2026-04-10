@@ -91,6 +91,21 @@
     "reactionLab": {
       "title": "Lab de Reacoes",
       "description": "Misture substancias e veja o que acontece"
+    },
+    "battleship": {
+      "title": "Batalha Naval",
+      "description": "Afunde a frota do seu rival",
+      "player": "Jogador",
+      "placeYourShips": "Coloque seus navios",
+      "yourTurn": "E sua vez de atacar",
+      "passDevice": "Passe o dispositivo para o outro jogador",
+      "ready": "Estou pronto!",
+      "rotate": "Girar",
+      "random": "Aleatorio",
+      "confirm": "Confirmar",
+      "enemyWaters": "Aguas inimigas",
+      "myFleet": "Minha frota",
+      "wins": "venceu"
     }
   },
   "auth": {
