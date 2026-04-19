@@ -1,346 +1,71 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { Box, Typography, Button, Container, IconButton, Chip } from '@mui/material';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import {
+  Box,
+  Typography,
+  Button,
+  Container,
+  IconButton,
+  Chip,
+  TextField,
+  CircularProgress,
+} from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import RotateRightRoundedIcon from '@mui/icons-material/RotateRightRounded';
 import ShuffleRoundedIcon from '@mui/icons-material/ShuffleRounded';
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { useRouter } from 'next/navigation';
 import { colors } from '@/lib/theme/colors';
 import { useTranslations } from 'next-intl';
 import { useGameSounds } from '@/lib/hooks/useGameSounds';
+import { usePlayerStore } from '@/lib/store/usePlayerStore';
 import RewardCelebration from '@/components/game/RewardCelebration';
-
-// ── Types ──────────────────────────────────────────────
-type CellState = 'empty' | 'ship' | 'hit' | 'miss' | 'sunk';
-type Phase = 'setup-p1' | 'setup-p2' | 'transition' | 'battle-p1' | 'battle-p2' | 'gameover';
-type Orientation = 'horizontal' | 'vertical';
-
-interface Ship {
-  id: string;
-  name: string;
-  emoji: string;
-  size: number;
-  placed: boolean;
-  cells: [number, number][];
-  sunk: boolean;
-}
-
-interface Board {
-  cells: CellState[][];
-  ships: Ship[];
-}
+import {
+  type BattleshipGame,
+  type PlacedShip,
+  type Attack,
+  type CellState,
+  type Orientation,
+  GRID_SIZE,
+  SHIP_DEFS,
+  createRoom,
+  joinRoom,
+  subscribeToGame,
+  submitShips,
+  fireAt,
+  placeShip,
+  randomPlacement,
+  buildMyGrid,
+  buildAttackGrid,
+} from '@/lib/firebase/battleship';
 
 // ── Constants ──────────────────────────────────────────
-const GRID_SIZE = 8;
-const SHIP_DEFS = [
-  { id: 'carrier', name: 'Portaaviones', emoji: '🚢', size: 4 },
-  { id: 'battleship', name: 'Acorazado', emoji: '⛵', size: 3 },
-  { id: 'submarine', name: 'Submarino', emoji: '🤿', size: 3 },
-  { id: 'destroyer', name: 'Destructor', emoji: '🛥️', size: 2 },
-];
-
 const WATER_COLOR = '#e3f2fd';
 const HIT_COLOR = colors.error;
 const MISS_COLOR = '#b0bec5';
 const SHIP_COLOR = colors.math;
 const SUNK_COLOR = '#d32f2f';
-
-// ── Helpers ────────────────────────────────────────────
-function createEmptyBoard(): Board {
-  return {
-    cells: Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill('empty')),
-    ships: SHIP_DEFS.map((d) => ({ ...d, placed: false, cells: [], sunk: false })),
-  };
-}
-
-function canPlaceShip(
-  board: Board,
-  shipSize: number,
-  row: number,
-  col: number,
-  orientation: Orientation,
-): boolean {
-  for (let i = 0; i < shipSize; i++) {
-    const r = orientation === 'vertical' ? row + i : row;
-    const c = orientation === 'horizontal' ? col + i : col;
-    if (r >= GRID_SIZE || c >= GRID_SIZE) return false;
-    if (board.cells[r][c] !== 'empty') return false;
-  }
-  return true;
-}
-
-function placeShipOnBoard(
-  board: Board,
-  shipIndex: number,
-  row: number,
-  col: number,
-  orientation: Orientation,
-): Board {
-  const ship = board.ships[shipIndex];
-  if (!canPlaceShip(board, ship.size, row, col, orientation)) return board;
-
-  const newCells = board.cells.map((r) => [...r]);
-  const shipCells: [number, number][] = [];
-
-  for (let i = 0; i < ship.size; i++) {
-    const r = orientation === 'vertical' ? row + i : row;
-    const c = orientation === 'horizontal' ? col + i : col;
-    newCells[r][c] = 'ship';
-    shipCells.push([r, c]);
-  }
-
-  const newShips = board.ships.map((s, idx) =>
-    idx === shipIndex ? { ...s, placed: true, cells: shipCells } : s,
-  );
-
-  return { cells: newCells, ships: newShips };
-}
-
-function randomPlacement(): Board {
-  let board = createEmptyBoard();
-  for (let si = 0; si < SHIP_DEFS.length; si++) {
-    let placed = false;
-    let attempts = 0;
-    while (!placed && attempts < 200) {
-      const orientation: Orientation = Math.random() > 0.5 ? 'horizontal' : 'vertical';
-      const row = Math.floor(Math.random() * GRID_SIZE);
-      const col = Math.floor(Math.random() * GRID_SIZE);
-      if (canPlaceShip(board, SHIP_DEFS[si].size, row, col, orientation)) {
-        board = placeShipOnBoard(board, si, row, col, orientation);
-        placed = true;
-      }
-      attempts++;
-    }
-  }
-  return board;
-}
-
-function checkSunk(board: Board, shipIndex: number): boolean {
-  const ship = board.ships[shipIndex];
-  return ship.cells.every(([r, c]) => board.cells[r][c] === 'hit' || board.cells[r][c] === 'sunk');
-}
-
-function allShipsSunk(board: Board): boolean {
-  return board.ships.filter((s) => s.placed).every((s) => s.sunk);
-}
-
-// ── Column/Row labels ──────────────────────────────────
 const COL_LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const ROW_LABELS = ['1', '2', '3', '4', '5', '6', '7', '8'];
-
-// ── Cell size based on grid ────────────────────────────
 const CELL_SIZE = 38;
 
 // ════════════════════════════════════════════════════════
-// MAIN COMPONENT
+// GRID RENDERER
 // ════════════════════════════════════════════════════════
-export default function BattleshipGame() {
-  const router = useRouter();
-  const t = useTranslations('game');
-  const tBattle = useTranslations('games.battleship');
-  const { playCorrect, playWrong, playTap, playWin, playPerfect, playWhoosh, playPop } =
-    useGameSounds();
-
-  // ── State ──────────────────────────────────────────
-  const [phase, setPhase] = useState<Phase>('setup-p1');
-  const [boardP1, setBoardP1] = useState<Board>(createEmptyBoard);
-  const [boardP2, setBoardP2] = useState<Board>(createEmptyBoard);
-  const [attackBoardP1, setAttackBoardP1] = useState<CellState[][]>(
-    () => Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill('empty')),
-  );
-  const [attackBoardP2, setAttackBoardP2] = useState<CellState[][]>(
-    () => Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill('empty')),
-  );
-  const [orientation, setOrientation] = useState<Orientation>('horizontal');
-  const [currentShipIndex, setCurrentShipIndex] = useState(0);
-  const [hitsP1, setHitsP1] = useState(0);
-  const [hitsP2, setHitsP2] = useState(0);
-  const [lastAction, setLastAction] = useState<string>('');
-  const [winner, setWinner] = useState<1 | 2 | null>(null);
-  const [showCelebration, setShowCelebration] = useState(false);
-
-  const currentPlayer = phase === 'setup-p1' || phase === 'battle-p1' ? 1 : 2;
-  const isSetup = phase === 'setup-p1' || phase === 'setup-p2';
-
-  // ── Setup: place ship ──────────────────────────────
-  const handleSetupClick = useCallback(
-    (row: number, col: number) => {
-      const board = currentPlayer === 1 ? boardP1 : boardP2;
-      const setBoard = currentPlayer === 1 ? setBoardP1 : setBoardP2;
-      if (currentShipIndex >= SHIP_DEFS.length) return;
-
-      const newBoard = placeShipOnBoard(board, currentShipIndex, row, col, orientation);
-      if (newBoard === board) {
-        playWrong();
-        return;
-      }
-
-      playPop();
-      setBoard(newBoard);
-
-      if (currentShipIndex + 1 >= SHIP_DEFS.length) {
-        // All ships placed
-        if (phase === 'setup-p1') {
-          setTimeout(() => {
-            setCurrentShipIndex(0);
-            setPhase('transition');
-          }, 400);
-        } else {
-          setTimeout(() => {
-            setPhase('transition');
-          }, 400);
-        }
-      } else {
-        setCurrentShipIndex(currentShipIndex + 1);
-      }
-    },
-    [currentPlayer, boardP1, boardP2, currentShipIndex, orientation, phase, playWrong, playPop],
-  );
-
-  // ── Setup: random placement ────────────────────────
-  const handleRandomPlace = useCallback(() => {
-    playWhoosh();
-    const board = randomPlacement();
-    if (currentPlayer === 1) setBoardP1(board);
-    else setBoardP2(board);
-    setCurrentShipIndex(SHIP_DEFS.length);
-    setTimeout(() => {
-      setPhase('transition');
-    }, 400);
-  }, [currentPlayer, playWhoosh]);
-
-  // ── Transition continue ────────────────────────────
-  const handleTransitionContinue = useCallback(() => {
-    playTap();
-    if (phase === 'transition') {
-      // Determine next phase
-      if (!boardP2.ships.some((s) => s.placed)) {
-        // P2 still needs to set up
-        setCurrentShipIndex(0);
-        setPhase('setup-p2');
-      } else {
-        // Both set up, start battle
-        setPhase('battle-p1');
-      }
-    }
-  }, [phase, boardP2.ships, playTap]);
-
-  // ── Battle: fire ───────────────────────────────────
-  const handleFire = useCallback(
-    (row: number, col: number) => {
-      const attackingPlayer = phase === 'battle-p1' ? 1 : 2;
-      const targetBoard = attackingPlayer === 1 ? boardP2 : boardP1;
-      const setTargetBoard = attackingPlayer === 1 ? setBoardP2 : setBoardP1;
-      const attackBoard = attackingPlayer === 1 ? attackBoardP1 : attackBoardP2;
-      const setAttackBoard = attackingPlayer === 1 ? setAttackBoardP1 : setAttackBoardP2;
-
-      // Already attacked this cell
-      if (attackBoard[row][col] !== 'empty') return;
-
-      const newAttackBoard = attackBoard.map((r) => [...r]);
-      const isHit = targetBoard.cells[row][col] === 'ship';
-
-      if (isHit) {
-        playCorrect();
-        newAttackBoard[row][col] = 'hit';
-
-        // Update target board
-        const newTargetCells = targetBoard.cells.map((r) => [...r]);
-        newTargetCells[row][col] = 'hit';
-        let newTargetShips = [...targetBoard.ships];
-
-        // Check if any ship is sunk
-        let sunkShipName = '';
-        newTargetShips = newTargetShips.map((ship) => {
-          if (ship.sunk) return ship;
-          const isSunk = ship.cells.every(
-            ([sr, sc]) => newTargetCells[sr][sc] === 'hit' || newTargetCells[sr][sc] === 'sunk',
-          );
-          if (isSunk) {
-            sunkShipName = ship.emoji + ' ' + ship.name;
-            // Mark cells as sunk
-            ship.cells.forEach(([sr, sc]) => {
-              newTargetCells[sr][sc] = 'sunk';
-              newAttackBoard[sr][sc] = 'sunk';
-            });
-            return { ...ship, sunk: true };
-          }
-          return ship;
-        });
-
-        const updatedTargetBoard = { cells: newTargetCells, ships: newTargetShips };
-        setTargetBoard(updatedTargetBoard);
-
-        if (attackingPlayer === 1) setHitsP1((h) => h + 1);
-        else setHitsP2((h) => h + 1);
-
-        if (sunkShipName) {
-          setLastAction(`💥 ${sunkShipName} hundido!`);
-        } else {
-          setLastAction('💥 Impacto!');
-        }
-
-        // Check win
-        if (allShipsSunk(updatedTargetBoard)) {
-          setWinner(attackingPlayer as 1 | 2);
-          setPhase('gameover');
-          playPerfect();
-          setShowCelebration(true);
-          setAttackBoard(newAttackBoard);
-          return;
-        }
-      } else {
-        playWrong();
-        newAttackBoard[row][col] = 'miss';
-        setLastAction('💧 Agua!');
-      }
-
-      setAttackBoard(newAttackBoard);
-
-      // Switch turns after a delay
-      setTimeout(() => {
-        setPhase('transition');
-      }, 1200);
-    },
-    [
-      phase,
-      boardP1,
-      boardP2,
-      attackBoardP1,
-      attackBoardP2,
-      playCorrect,
-      playWrong,
-      playPerfect,
-    ],
-  );
-
-  // ── Restart ────────────────────────────────────────
-  const handleRestart = () => {
-    setBoardP1(createEmptyBoard());
-    setBoardP2(createEmptyBoard());
-    setAttackBoardP1(Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill('empty')));
-    setAttackBoardP2(Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill('empty')));
-    setCurrentShipIndex(0);
-    setOrientation('horizontal');
-    setHitsP1(0);
-    setHitsP2(0);
-    setLastAction('');
-    setWinner(null);
-    setShowCelebration(false);
-    setPhase('setup-p1');
-  };
-
-  // ════════════════════════════════════════════════════
-  // RENDER GRID
-  // ════════════════════════════════════════════════════
-  const renderGrid = (
-    grid: CellState[][],
-    onClick: (r: number, c: number) => void,
-    showShips: boolean,
-    interactive: boolean,
-  ) => (
+function GameGrid({
+  grid,
+  onClick,
+  interactive,
+  showShips,
+}: {
+  grid: CellState[][];
+  onClick: (r: number, c: number) => void;
+  interactive: boolean;
+  showShips: boolean;
+}) {
+  return (
     <Box sx={{ display: 'inline-block' }}>
       {/* Column labels */}
       <Box sx={{ display: 'flex', ml: `${CELL_SIZE}px` }}>
@@ -364,7 +89,6 @@ export default function BattleshipGame() {
 
       {grid.map((row, ri) => (
         <Box key={ri} sx={{ display: 'flex' }}>
-          {/* Row label */}
           <Box
             sx={{
               width: CELL_SIZE,
@@ -423,9 +147,7 @@ export default function BattleshipGame() {
                     justifyContent: 'center',
                     cursor: isClickable ? 'pointer' : 'default',
                     transition: 'all 0.15s',
-                    '&:hover': isClickable
-                      ? { bgcolor: '#90caf9', transform: 'scale(1.08)' }
-                      : {},
+                    '&:hover': isClickable ? { bgcolor: '#90caf9', transform: 'scale(1.08)' } : {},
                     fontSize: cell === 'miss' ? '1.2rem' : '0.9rem',
                     color: cell === 'miss' ? 'white' : undefined,
                     fontWeight: 700,
@@ -440,85 +162,410 @@ export default function BattleshipGame() {
       ))}
     </Box>
   );
+}
+
+// ════════════════════════════════════════════════════════
+// MAIN COMPONENT
+// ════════════════════════════════════════════════════════
+export default function BattleshipMultiplayer() {
+  const router = useRouter();
+  const t = useTranslations('game');
+  const tBattle = useTranslations('games.battleship');
+  const { playCorrect, playWrong, playTap, playPerfect, playWhoosh, playPop } = useGameSounds();
+  const playerName = usePlayerStore((s) => s.displayName) || 'Jugador';
+  const playerUid = usePlayerStore((s) => s.uid);
+
+  // ── State ──────────────────────────────────────────
+  const [screen, setScreen] = useState<'lobby' | 'game'>('lobby');
+  const [roomCode, setRoomCode] = useState('');
+  const [joinCode, setJoinCode] = useState('');
+  const [myPlayerNumber, setMyPlayerNumber] = useState<1 | 2 | null>(null);
+  const [game, setGame] = useState<BattleshipGame | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  // Setup state
+  const [myShips, setMyShips] = useState<PlacedShip[]>([]);
+  const [orientation, setOrientation] = useState<Orientation>('horizontal');
+  const [shipsSubmitted, setShipsSubmitted] = useState(false);
+
+  // Battle state
+  const [lastAttack, setLastAttack] = useState<Attack | null>(null);
+  const [firing, setFiring] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+
+  const unsubRef = useRef<(() => void) | null>(null);
+  const prevAttackCountRef = useRef(0);
+
+  // Effective UID: use Firebase uid or fallback to a localStorage-based ID
+  const uid = playerUid || (() => {
+    if (typeof window === 'undefined') return 'anon';
+    let id = localStorage.getItem('brainkids-anon-uid');
+    if (!id) {
+      id = 'anon-' + Math.random().toString(36).substring(2, 10);
+      localStorage.setItem('brainkids-anon-uid', id);
+    }
+    return id;
+  })();
+
+  // ── Subscribe to game ──────────────────────────────
+  const startListening = useCallback(
+    (code: string) => {
+      if (unsubRef.current) unsubRef.current();
+      unsubRef.current = subscribeToGame(code, (g) => {
+        setGame(g);
+      });
+    },
+    [],
+  );
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (unsubRef.current) unsubRef.current();
+    };
+  }, []);
+
+  // Sound effects for incoming attacks
+  useEffect(() => {
+    if (!game || game.status !== 'playing' || !myPlayerNumber) return;
+    const attacksOnMe = myPlayerNumber === 1 ? game.attacksP2 : game.attacksP1;
+    if (attacksOnMe.length > prevAttackCountRef.current) {
+      const latest = attacksOnMe[attacksOnMe.length - 1];
+      if (latest.result === 'hit' || latest.result === 'sunk') playWrong();
+    }
+    prevAttackCountRef.current = attacksOnMe.length;
+  }, [game, myPlayerNumber, playWrong]);
+
+  // Show celebration on game over
+  useEffect(() => {
+    if (game?.status === 'gameover' && game.winner === myPlayerNumber && !showCelebration) {
+      playPerfect();
+      setShowCelebration(true);
+    }
+  }, [game?.status, game?.winner, myPlayerNumber, playPerfect, showCelebration]);
+
+  // ── Create Room ────────────────────────────────────
+  const handleCreate = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const code = await createRoom(uid, playerName);
+      setRoomCode(code);
+      setMyPlayerNumber(1);
+      startListening(code);
+      setScreen('game');
+    } catch {
+      setError(tBattle('errorCreating'));
+    }
+    setLoading(false);
+  };
+
+  // ── Join Room ──────────────────────────────────────
+  const handleJoin = async () => {
+    if (joinCode.length < 4) return;
+    setLoading(true);
+    setError('');
+    try {
+      const code = joinCode.toUpperCase();
+      const result = await joinRoom(code, uid, playerName);
+      if (result.success) {
+        setRoomCode(code);
+        setMyPlayerNumber(2);
+        startListening(code);
+        setScreen('game');
+      } else {
+        setError(tBattle(result.error || 'errorJoining'));
+      }
+    } catch {
+      setError(tBattle('errorJoining'));
+    }
+    setLoading(false);
+  };
+
+  // ── Copy room code ─────────────────────────────────
+  const handleCopy = () => {
+    navigator.clipboard.writeText(roomCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // ── Place ship (setup) ─────────────────────────────
+  const currentShipIndex = myShips.length;
+  const handlePlaceShip = useCallback(
+    (row: number, col: number) => {
+      if (currentShipIndex >= SHIP_DEFS.length) return;
+      const result = placeShip(myShips, SHIP_DEFS[currentShipIndex], row, col, orientation);
+      if (!result) {
+        playWrong();
+        return;
+      }
+      playPop();
+      setMyShips(result);
+    },
+    [myShips, currentShipIndex, orientation, playWrong, playPop],
+  );
+
+  // ── Random placement ───────────────────────────────
+  const handleRandom = () => {
+    playWhoosh();
+    setMyShips(randomPlacement());
+  };
+
+  // ── Submit ships ───────────────────────────────────
+  const handleSubmitShips = async () => {
+    if (myShips.length < SHIP_DEFS.length || !myPlayerNumber) return;
+    playTap();
+    setShipsSubmitted(true);
+    await submitShips(roomCode, myPlayerNumber, myShips);
+  };
+
+  // ── Fire! ──────────────────────────────────────────
+  const handleFire = useCallback(
+    async (row: number, col: number) => {
+      if (firing || !myPlayerNumber || !game) return;
+      if (game.currentTurn !== myPlayerNumber) return;
+
+      setFiring(true);
+      const attack = await fireAt(roomCode, myPlayerNumber, row, col);
+      if (attack) {
+        setLastAttack(attack);
+        if (attack.result === 'hit' || attack.result === 'sunk') playCorrect();
+        else playWrong();
+      }
+      setFiring(false);
+    },
+    [firing, myPlayerNumber, game, roomCode, playCorrect, playWrong],
+  );
+
+  // ── Restart (back to lobby) ────────────────────────
+  const handleBackToLobby = () => {
+    if (unsubRef.current) unsubRef.current();
+    setScreen('lobby');
+    setGame(null);
+    setRoomCode('');
+    setJoinCode('');
+    setMyPlayerNumber(null);
+    setMyShips([]);
+    setShipsSubmitted(false);
+    setLastAttack(null);
+    setShowCelebration(false);
+    prevAttackCountRef.current = 0;
+  };
 
   // ════════════════════════════════════════════════════
-  // RENDER PHASES
+  // RENDER: LOBBY
   // ════════════════════════════════════════════════════
-
-  // ── Transition screen (pass device) ────────────────
-  if (phase === 'transition') {
-    const nextPlayer = !boardP2.ships.some((s) => s.placed)
-      ? 2
-      : phase === 'transition' && lastAction
-      ? currentPlayer === 1
-        ? 2
-        : 1
-      : 1;
-    const isSetupTransition = !boardP2.ships.some((s) => s.placed);
-
+  if (screen === 'lobby') {
     return (
-      <Box
-        sx={{
-          minHeight: '100vh',
-          bgcolor: colors.background,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <Box sx={{ minHeight: '100vh', bgcolor: colors.background }}>
+        {/* Header */}
+        <Box
+          sx={{
+            background: `linear-gradient(135deg, ${colors.math}, ${colors.mathLight})`,
+            color: 'white',
+            p: 3,
+            pb: 4,
+            borderRadius: '0 0 28px 28px',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton onClick={() => router.back()} sx={{ color: 'white' }}>
+              <ArrowBackRoundedIcon />
+            </IconButton>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              {tBattle('title')}
+            </Typography>
+          </Box>
+          <Typography variant="body1" sx={{ opacity: 0.9, mt: 0.5, ml: 6 }}>
+            {tBattle('description')}
+          </Typography>
+        </Box>
+
+        <Container maxWidth="sm" sx={{ mt: 4, textAlign: 'center' }}>
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+            <Typography sx={{ fontSize: '4rem', mb: 2 }}>🚢</Typography>
+
+            {/* Create Room */}
+            <Box
+              sx={{
+                bgcolor: 'white',
+                borderRadius: 4,
+                p: 3,
+                mb: 3,
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              }}
+            >
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: colors.math }}>
+                {tBattle('createRoom')}
+              </Typography>
+              <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 2 }}>
+                {tBattle('createRoomDesc')}
+              </Typography>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleCreate}
+                disabled={loading}
+                sx={{
+                  bgcolor: colors.math,
+                  borderRadius: 6,
+                  px: 5,
+                  fontWeight: 700,
+                  '&:hover': { bgcolor: colors.math },
+                }}
+              >
+                {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : tBattle('create')}
+              </Button>
+            </Box>
+
+            {/* Join Room */}
+            <Box
+              sx={{
+                bgcolor: 'white',
+                borderRadius: 4,
+                p: 3,
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              }}
+            >
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: colors.math }}>
+                {tBattle('joinRoom')}
+              </Typography>
+              <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 2 }}>
+                {tBattle('joinRoomDesc')}
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                <TextField
+                  value={joinCode}
+                  onChange={(e) => setJoinCode(e.target.value.toUpperCase().slice(0, 4))}
+                  placeholder="ABCD"
+                  inputProps={{
+                    maxLength: 4,
+                    style: {
+                      textAlign: 'center',
+                      fontSize: '1.5rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.3em',
+                      textTransform: 'uppercase',
+                    },
+                  }}
+                  sx={{
+                    width: 160,
+                    '& .MuiOutlinedInput-root': { borderRadius: 3 },
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  onClick={handleJoin}
+                  disabled={loading || joinCode.length < 4}
+                  sx={{
+                    bgcolor: colors.math,
+                    borderRadius: 3,
+                    fontWeight: 700,
+                    '&:hover': { bgcolor: colors.math },
+                  }}
+                >
+                  {tBattle('join')}
+                </Button>
+              </Box>
+            </Box>
+
+            {error && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <Typography sx={{ color: colors.error, mt: 2, fontWeight: 700 }}>
+                  {error}
+                </Typography>
+              </motion.div>
+            )}
+          </motion.div>
+        </Container>
+      </Box>
+    );
+  }
+
+  // ════════════════════════════════════════════════════
+  // RENDER: IN-GAME
+  // ════════════════════════════════════════════════════
+  if (!game) {
+    return (
+      <Box sx={{ minHeight: '100vh', bgcolor: colors.background, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <CircularProgress sx={{ color: colors.math }} />
+      </Box>
+    );
+  }
+
+  const isMyTurn = game.currentTurn === myPlayerNumber;
+  const myData = myPlayerNumber === 1 ? game.player1 : game.player2;
+  const opponentData = myPlayerNumber === 1 ? game.player2 : game.player1;
+  const myAttacks = myPlayerNumber === 1 ? game.attacksP1 : game.attacksP2;
+  const attacksOnMe = myPlayerNumber === 1 ? game.attacksP2 : game.attacksP1;
+
+  // ── Waiting for player 2 ──────────────────────────
+  if (game.status === 'waiting') {
+    return (
+      <Box sx={{ minHeight: '100vh', bgcolor: colors.background, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', damping: 15 }}
         >
           <Box sx={{ textAlign: 'center', p: 4 }}>
-            <Typography sx={{ fontSize: '4rem', mb: 2 }}>
-              {isSetupTransition ? '🎯' : '🔄'}
+            <Typography sx={{ fontSize: '3rem', mb: 2 }}>⏳</Typography>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: colors.math, mb: 2 }}>
+              {tBattle('waitingForPlayer')}
             </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: colors.math, mb: 1 }}>
-              {tBattle('player')} {nextPlayer}
+            <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 3 }}>
+              {tBattle('shareCode')}
             </Typography>
-            <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 1 }}>
-              {isSetupTransition ? tBattle('placeYourShips') : tBattle('yourTurn')}
-            </Typography>
-            {lastAction && !isSetupTransition && (
-              <motion.div
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <Chip
-                  label={lastAction}
-                  sx={{
-                    mt: 1,
-                    mb: 2,
-                    fontWeight: 700,
-                    fontSize: '0.95rem',
-                    bgcolor: lastAction.includes('Impacto') || lastAction.includes('hundido')
-                      ? `${HIT_COLOR}22`
-                      : `${MISS_COLOR}22`,
-                  }}
-                />
-              </motion.div>
-            )}
-            <Typography variant="caption" sx={{ display: 'block', color: colors.textMuted, mb: 3 }}>
-              {tBattle('passDevice')}
-            </Typography>
-            <Button
-              variant="contained"
-              size="large"
-              onClick={handleTransitionContinue}
+
+            {/* Room code display */}
+            <Box
               sx={{
-                bgcolor: colors.math,
-                borderRadius: 6,
-                px: 5,
-                py: 1.5,
-                fontSize: '1.1rem',
-                fontWeight: 700,
-                '&:hover': { bgcolor: colors.math },
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 1,
+                bgcolor: 'white',
+                borderRadius: 4,
+                px: 4,
+                py: 2,
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                mb: 3,
               }}
             >
-              {tBattle('ready')}
+              <Typography
+                variant="h3"
+                sx={{
+                  fontWeight: 700,
+                  color: colors.math,
+                  letterSpacing: '0.3em',
+                  fontFamily: 'monospace',
+                }}
+              >
+                {roomCode}
+              </Typography>
+              <IconButton onClick={handleCopy} sx={{ color: colors.math }}>
+                <ContentCopyRoundedIcon />
+              </IconButton>
+            </Box>
+            {copied && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <Typography variant="caption" sx={{ display: 'block', color: colors.success, fontWeight: 700 }}>
+                  {tBattle('copied')}
+                </Typography>
+              </motion.div>
+            )}
+
+            <Box sx={{ mt: 3 }}>
+              <CircularProgress size={28} sx={{ color: colors.math }} />
+            </Box>
+
+            <Button
+              variant="text"
+              onClick={handleBackToLobby}
+              sx={{ mt: 3, color: colors.textSecondary }}
+            >
+              {t('back')}
             </Button>
           </Box>
         </motion.div>
@@ -526,294 +573,372 @@ export default function BattleshipGame() {
     );
   }
 
-  // ── Game Over ──────────────────────────────────────
-  if (phase === 'gameover') {
-    return (
-      <Box
-        sx={{
-          minHeight: '100vh',
-          bgcolor: colors.background,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', damping: 12 }}
-        >
-          <Box
-            sx={{
-              textAlign: 'center',
-              p: 4,
-              bgcolor: 'white',
-              borderRadius: 5,
-              boxShadow: '0 16px 48px rgba(0,0,0,0.12)',
-              mx: 2,
-            }}
-          >
-            <Typography sx={{ fontSize: '3.5rem', mb: 1 }}>🏆</Typography>
-            <Typography variant="h3" sx={{ fontWeight: 700, color: colors.math, mb: 1 }}>
-              {tBattle('player')} {winner} {tBattle('wins')}!
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, my: 2 }}>
-              <Box>
-                <Typography variant="caption" sx={{ color: colors.textSecondary }}>
-                  {tBattle('player')} 1
-                </Typography>
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                  {hitsP1} 💥
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="caption" sx={{ color: colors.textSecondary }}>
-                  {tBattle('player')} 2
-                </Typography>
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                  {hitsP2} 💥
-                </Typography>
-              </Box>
+  // ── Setup phase ────────────────────────────────────
+  if (game.status === 'setup') {
+    const setupGrid: CellState[][] = Array.from({ length: GRID_SIZE }, () =>
+      Array(GRID_SIZE).fill('empty'),
+    );
+    for (const ship of myShips) {
+      for (const [r, c] of ship.cells) {
+        setupGrid[r][c] = 'ship';
+      }
+    }
+
+    const allPlaced = myShips.length >= SHIP_DEFS.length;
+
+    // Already submitted, waiting for opponent
+    if (shipsSubmitted) {
+      return (
+        <Box sx={{ minHeight: '100vh', bgcolor: colors.background, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+            <Box sx={{ textAlign: 'center', p: 4 }}>
+              <Typography sx={{ fontSize: '3rem', mb: 2 }}>✅</Typography>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: colors.math, mb: 1 }}>
+                {tBattle('shipsReady')}
+              </Typography>
+              <Typography variant="body2" sx={{ color: colors.textSecondary, mb: 3 }}>
+                {tBattle('waitingForOpponent')}
+              </Typography>
+              <CircularProgress size={28} sx={{ color: colors.math }} />
             </Box>
-            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', mt: 3 }}>
+          </motion.div>
+        </Box>
+      );
+    }
+
+    return (
+      <Box sx={{ minHeight: '100vh', bgcolor: colors.background, pb: 4 }}>
+        {/* Header */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            p: 2,
+            bgcolor: 'white',
+            borderRadius: '0 0 20px 20px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton onClick={handleBackToLobby} size="small">
+              <ArrowBackRoundedIcon />
+            </IconButton>
+            <Typography variant="h6" sx={{ color: colors.math, fontWeight: 700 }}>
+              {tBattle('title')}
+            </Typography>
+          </Box>
+          <Chip
+            label={`${tBattle('room')}: ${roomCode}`}
+            size="small"
+            sx={{ fontWeight: 700, bgcolor: `${colors.math}22`, color: colors.math }}
+          />
+        </Box>
+
+        <Container maxWidth="sm" sx={{ pt: 2, textAlign: 'center' }}>
+          <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+            <Typography variant="body1" sx={{ fontWeight: 700, mb: 0.5, color: colors.textPrimary }}>
+              {tBattle('placeYourShips')}
+            </Typography>
+
+            {currentShipIndex < SHIP_DEFS.length && (
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1.5 }}>
+                <Typography sx={{ fontSize: '1.3rem' }}>
+                  {SHIP_DEFS[currentShipIndex].emoji}
+                </Typography>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: colors.math }}>
+                  {SHIP_DEFS[currentShipIndex].name} ({SHIP_DEFS[currentShipIndex].size})
+                </Typography>
+                <Chip
+                  label={orientation === 'horizontal' ? '↔️' : '↕️'}
+                  size="small"
+                  sx={{ fontWeight: 700 }}
+                />
+              </Box>
+            )}
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 2 }}>
               <Button
+                size="small"
                 variant="outlined"
-                onClick={() => router.back()}
-                sx={{ borderRadius: 4, borderColor: colors.math, color: colors.math }}
+                startIcon={<RotateRightRoundedIcon />}
+                onClick={() => {
+                  playTap();
+                  setOrientation((o) => (o === 'horizontal' ? 'vertical' : 'horizontal'));
+                }}
+                sx={{ borderRadius: 4, borderColor: colors.math, color: colors.math, textTransform: 'none' }}
               >
-                {t('back')}
+                {tBattle('rotate')}
               </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                startIcon={<ShuffleRoundedIcon />}
+                onClick={handleRandom}
+                sx={{ borderRadius: 4, borderColor: colors.math, color: colors.math, textTransform: 'none' }}
+              >
+                {tBattle('random')}
+              </Button>
+            </Box>
+          </motion.div>
+
+          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+            <GameGrid
+              grid={setupGrid}
+              onClick={handlePlaceShip}
+              interactive={currentShipIndex < SHIP_DEFS.length}
+              showShips={true}
+            />
+          </motion.div>
+
+          {/* Ship list */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2, flexWrap: 'wrap' }}>
+            {SHIP_DEFS.map((def, idx) => {
+              const isPlaced = idx < myShips.length;
+              return (
+                <Chip
+                  key={def.id}
+                  label={`${def.emoji} ${def.size}`}
+                  size="small"
+                  sx={{
+                    fontWeight: 700,
+                    bgcolor: isPlaced ? `${colors.success}22` : `${colors.math}11`,
+                    color: isPlaced ? colors.success : colors.textSecondary,
+                    border: idx === currentShipIndex && !isPlaced ? `2px solid ${colors.math}` : undefined,
+                  }}
+                />
+              );
+            })}
+          </Box>
+
+          {allPlaced && (
+            <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
               <Button
                 variant="contained"
-                onClick={handleRestart}
-                sx={{ bgcolor: colors.math, borderRadius: 4, '&:hover': { bgcolor: colors.math } }}
+                size="large"
+                onClick={handleSubmitShips}
+                sx={{
+                  mt: 3,
+                  bgcolor: colors.math,
+                  borderRadius: 6,
+                  px: 5,
+                  fontWeight: 700,
+                  '&:hover': { bgcolor: colors.math },
+                }}
               >
-                {t('playAgain')}
+                {tBattle('confirm')}
               </Button>
-            </Box>
-          </Box>
-        </motion.div>
-
-        <RewardCelebration
-          show={showCelebration}
-          message={`🚢 ${tBattle('player')} ${winner} ${tBattle('wins')}!`}
-          stars={3}
-          onComplete={() => setShowCelebration(false)}
-        />
+            </motion.div>
+          )}
+        </Container>
       </Box>
     );
   }
 
-  // ── Setup & Battle phases ──────────────────────────
-  const isBattle = phase === 'battle-p1' || phase === 'battle-p2';
-  const myBoard = currentPlayer === 1 ? boardP1 : boardP2;
-  const attackBoard = currentPlayer === 1 ? attackBoardP1 : attackBoardP2;
-  const targetBoard = currentPlayer === 1 ? boardP2 : boardP1;
+  // ── Battle phase ───────────────────────────────────
+  if (game.status === 'playing' || game.status === 'gameover') {
+    const attackGrid = buildAttackGrid(myAttacks);
+    const myGrid = buildMyGrid(myShips.length > 0 ? myShips : myData?.ships || [], attacksOnMe);
+    const opponentShips = opponentData?.ships || [];
 
-  // For battle: build a combined view of the target for display
-  const targetView: CellState[][] = Array.from({ length: GRID_SIZE }, (_, ri) =>
-    Array.from({ length: GRID_SIZE }, (_, ci) => attackBoard[ri][ci]),
-  );
-
-  return (
-    <Box sx={{ minHeight: '100vh', bgcolor: colors.background, pb: 4 }}>
-      {/* Header */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          p: 2,
-          bgcolor: 'white',
-          borderRadius: '0 0 20px 20px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-          position: 'relative',
-          zIndex: 10,
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <IconButton onClick={() => router.back()} size="small">
-            <ArrowBackRoundedIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{ color: colors.math, fontWeight: 700 }}>
-            {tBattle('title')}
-          </Typography>
-        </Box>
-        <Chip
-          label={`${tBattle('player')} ${currentPlayer}`}
+    // Game over screen
+    if (game.status === 'gameover') {
+      const iWon = game.winner === myPlayerNumber;
+      return (
+        <Box
           sx={{
-            bgcolor: `${colors.math}22`,
-            color: colors.math,
-            fontWeight: 700,
+            minHeight: '100vh',
+            bgcolor: colors.background,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
-        />
-      </Box>
-
-      <Container maxWidth="sm" sx={{ pt: 2, textAlign: 'center' }}>
-        {/* ── SETUP PHASE ── */}
-        {isSetup && (
-          <>
-            <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-              <Typography variant="body1" sx={{ fontWeight: 700, mb: 0.5, color: colors.textPrimary }}>
-                {tBattle('placeYourShips')}
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', damping: 12 }}
+          >
+            <Box
+              sx={{
+                textAlign: 'center',
+                p: 4,
+                bgcolor: 'white',
+                borderRadius: 5,
+                boxShadow: '0 16px 48px rgba(0,0,0,0.12)',
+                mx: 2,
+              }}
+            >
+              <Typography sx={{ fontSize: '3.5rem', mb: 1 }}>
+                {iWon ? '🏆' : '💔'}
               </Typography>
-
-              {currentShipIndex < SHIP_DEFS.length && (
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1.5 }}>
-                  <Typography sx={{ fontSize: '1.3rem' }}>
-                    {SHIP_DEFS[currentShipIndex].emoji}
+              <Typography variant="h3" sx={{ fontWeight: 700, color: iWon ? colors.math : colors.error, mb: 1 }}>
+                {iWon ? tBattle('youWin') : tBattle('youLose')}
+              </Typography>
+              <Typography variant="body1" sx={{ color: colors.textSecondary, mb: 2 }}>
+                vs {opponentData?.name || tBattle('player')}
+              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, my: 2 }}>
+                <Box>
+                  <Typography variant="caption" sx={{ color: colors.textSecondary }}>
+                    {tBattle('yourHits')}
                   </Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 700, color: colors.math }}>
-                    {SHIP_DEFS[currentShipIndex].name} ({SHIP_DEFS[currentShipIndex].size})
+                  <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                    {myAttacks.filter((a) => a.result !== 'miss').length} 💥
                   </Typography>
-                  <Chip
-                    label={orientation === 'horizontal' ? '↔️' : '↕️'}
-                    size="small"
-                    sx={{ fontWeight: 700 }}
-                  />
                 </Box>
-              )}
-
-              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 2 }}>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<RotateRightRoundedIcon />}
-                  onClick={() => {
-                    playTap();
-                    setOrientation((o) => (o === 'horizontal' ? 'vertical' : 'horizontal'));
-                  }}
-                  sx={{ borderRadius: 4, borderColor: colors.math, color: colors.math, textTransform: 'none' }}
-                >
-                  {tBattle('rotate')}
-                </Button>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<ShuffleRoundedIcon />}
-                  onClick={handleRandomPlace}
-                  sx={{ borderRadius: 4, borderColor: colors.math, color: colors.math, textTransform: 'none' }}
-                >
-                  {tBattle('random')}
-                </Button>
+                <Box>
+                  <Typography variant="caption" sx={{ color: colors.textSecondary }}>
+                    {tBattle('yourMisses')}
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                    {myAttacks.filter((a) => a.result === 'miss').length} 💧
+                  </Typography>
+                </Box>
               </Box>
-            </motion.div>
-
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-              {renderGrid(myBoard.cells, handleSetupClick, true, currentShipIndex < SHIP_DEFS.length)}
-            </motion.div>
-
-            {/* Ship list */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2, flexWrap: 'wrap' }}>
-              {myBoard.ships.map((ship, idx) => (
-                <Chip
-                  key={ship.id}
-                  label={`${ship.emoji} ${ship.size}`}
-                  size="small"
-                  sx={{
-                    fontWeight: 700,
-                    bgcolor: ship.placed ? `${colors.success}22` : `${colors.math}11`,
-                    color: ship.placed ? colors.success : colors.textSecondary,
-                    border: idx === currentShipIndex && !ship.placed ? `2px solid ${colors.math}` : undefined,
-                  }}
-                />
-              ))}
-            </Box>
-
-            {currentShipIndex >= SHIP_DEFS.length && (
-              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', mt: 3 }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => router.back()}
+                  sx={{ borderRadius: 4, borderColor: colors.math, color: colors.math }}
+                >
+                  {t('back')}
+                </Button>
                 <Button
                   variant="contained"
-                  size="large"
-                  onClick={() => {
-                    playTap();
-                    setPhase('transition');
-                  }}
-                  sx={{
-                    mt: 3,
-                    bgcolor: colors.math,
-                    borderRadius: 6,
-                    px: 5,
-                    fontWeight: 700,
-                    '&:hover': { bgcolor: colors.math },
-                  }}
+                  onClick={handleBackToLobby}
+                  sx={{ bgcolor: colors.math, borderRadius: 4, '&:hover': { bgcolor: colors.math } }}
                 >
-                  {tBattle('confirm')}
+                  {t('playAgain')}
                 </Button>
-              </motion.div>
-            )}
-          </>
-        )}
+              </Box>
+            </Box>
+          </motion.div>
 
-        {/* ── BATTLE PHASE ── */}
-        {isBattle && (
-          <>
-            {/* Last action feedback */}
-            <AnimatePresence>
-              {lastAction && (
-                <motion.div
-                  initial={{ y: -10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -10, opacity: 0 }}
-                >
-                  <Chip
-                    label={lastAction}
-                    sx={{
-                      mb: 1,
-                      fontWeight: 700,
-                      fontSize: '0.9rem',
-                      bgcolor: lastAction.includes('Impacto') || lastAction.includes('hundido')
-                        ? `${HIT_COLOR}22`
-                        : `${MISS_COLOR}22`,
-                    }}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <RewardCelebration
+            show={showCelebration && iWon}
+            message={`🚢 ${tBattle('youWin')}!`}
+            stars={3}
+            onComplete={() => setShowCelebration(false)}
+          />
+        </Box>
+      );
+    }
 
-            {/* Target grid (opponent) */}
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 700, mb: 0.5, color: colors.error, textTransform: 'uppercase', letterSpacing: 1 }}
-            >
-              🎯 {tBattle('enemyWaters')}
+    // Battle screen
+    return (
+      <Box sx={{ minHeight: '100vh', bgcolor: colors.background, pb: 4 }}>
+        {/* Header */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            p: 2,
+            bgcolor: 'white',
+            borderRadius: '0 0 20px 20px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton onClick={handleBackToLobby} size="small">
+              <ArrowBackRoundedIcon />
+            </IconButton>
+            <Typography variant="h6" sx={{ color: colors.math, fontWeight: 700 }}>
+              {tBattle('title')}
             </Typography>
+          </Box>
+          <Chip
+            label={isMyTurn ? `🎯 ${tBattle('yourTurnShort')}` : `⏳ ${tBattle('opponentTurn')}`}
+            sx={{
+              fontWeight: 700,
+              bgcolor: isMyTurn ? `${colors.success}22` : `${colors.warning}22`,
+              color: isMyTurn ? colors.success : colors.textSecondary,
+              animation: isMyTurn ? 'pulse 1.5s infinite' : 'none',
+              '@keyframes pulse': {
+                '0%, 100%': { transform: 'scale(1)' },
+                '50%': { transform: 'scale(1.05)' },
+              },
+            }}
+          />
+        </Box>
 
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-              {renderGrid(targetView, handleFire, false, true)}
+        <Container maxWidth="sm" sx={{ pt: 2, textAlign: 'center' }}>
+          {/* Turn indicator */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={isMyTurn ? 'my' : 'their'}
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 10, opacity: 0 }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 700,
+                  mb: 1,
+                  color: isMyTurn ? colors.success : colors.textMuted,
+                }}
+              >
+                {isMyTurn ? tBattle('tapToFire') : `${opponentData?.name || tBattle('player')} ${tBattle('isThinking')}...`}
+              </Typography>
             </motion.div>
+          </AnimatePresence>
 
-            {/* Enemy ships status */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 1, mb: 2, flexWrap: 'wrap' }}>
-              {(currentPlayer === 1 ? boardP2 : boardP1).ships.map((ship) => (
-                <Chip
-                  key={ship.id}
-                  label={`${ship.emoji} ${ship.size}`}
-                  size="small"
-                  sx={{
-                    fontWeight: 700,
-                    bgcolor: ship.sunk ? `${colors.error}22` : `${colors.math}11`,
-                    color: ship.sunk ? colors.error : colors.textSecondary,
-                    textDecoration: ship.sunk ? 'line-through' : 'none',
-                  }}
-                />
-              ))}
-            </Box>
+          {/* Target grid (opponent) */}
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 700, mb: 0.5, color: colors.error, textTransform: 'uppercase', letterSpacing: 1 }}
+          >
+            🎯 {tBattle('enemyWaters')}
+          </Typography>
 
-            {/* My board (small reference) */}
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 700, mb: 0.5, color: colors.math, textTransform: 'uppercase', letterSpacing: 1 }}
-            >
-              🛡️ {tBattle('myFleet')}
-            </Typography>
+          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+            <GameGrid
+              grid={attackGrid}
+              onClick={handleFire}
+              interactive={isMyTurn && !firing}
+              showShips={false}
+            />
+          </motion.div>
 
-            <Box sx={{ transform: 'scale(0.7)', transformOrigin: 'top center', mb: -6 }}>
-              {renderGrid(myBoard.cells, () => {}, true, false)}
-            </Box>
-          </>
-        )}
-      </Container>
+          {/* Enemy ships status */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 1, mb: 2, flexWrap: 'wrap' }}>
+            {opponentShips.map((ship) => (
+              <Chip
+                key={ship.id}
+                label={`${ship.emoji} ${ship.size}`}
+                size="small"
+                sx={{
+                  fontWeight: 700,
+                  bgcolor: ship.sunk ? `${colors.error}22` : `${colors.math}11`,
+                  color: ship.sunk ? colors.error : colors.textSecondary,
+                  textDecoration: ship.sunk ? 'line-through' : 'none',
+                }}
+              />
+            ))}
+          </Box>
+
+          {/* My board (reference) */}
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 700, mb: 0.5, color: colors.math, textTransform: 'uppercase', letterSpacing: 1 }}
+          >
+            🛡️ {tBattle('myFleet')}
+          </Typography>
+
+          <Box sx={{ transform: 'scale(0.7)', transformOrigin: 'top center', mb: -6 }}>
+            <GameGrid grid={myGrid} onClick={() => {}} interactive={false} showShips={true} />
+          </Box>
+        </Container>
+      </Box>
+    );
+  }
+
+  // Fallback
+  return (
+    <Box sx={{ minHeight: '100vh', bgcolor: colors.background, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <CircularProgress sx={{ color: colors.math }} />
     </Box>
   );
 }
