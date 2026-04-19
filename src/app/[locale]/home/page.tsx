@@ -11,7 +11,6 @@ import CalculateRoundedIcon from '@mui/icons-material/CalculateRounded';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import BiotechRoundedIcon from '@mui/icons-material/BiotechRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
-import HamburgerMenu from '@/components/layout/HamburgerMenu';
 import { useEffect } from 'react';
 
 export default function DashboardPage() {
@@ -37,12 +36,9 @@ export default function DashboardPage() {
         }}
       >
         <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
-              {name ? t('home.welcome', { name }) : t('home.welcomeDefault')}
-            </Typography>
-            <HamburgerMenu />
-          </Box>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5, pr: 6 }}>
+            {name ? t('home.welcome', { name }) : t('home.welcomeDefault')}
+          </Typography>
           <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
             <Chip
               label={t('home.level', { level })}
