@@ -68,13 +68,77 @@ const reactions: Reaction[] = [
     animation: 'bigFizz',
     resultColor: '#4e342e',
   },
+  {
+    substance1: 'Limon',
+    substance2: 'Bicarbonato',
+    result: 'Burbujas de acido citrico!',
+    emoji: '🫧',
+    animation: 'fizz',
+    resultColor: '#fff9c4',
+  },
+  {
+    substance1: 'Agua',
+    substance2: 'Azucar',
+    result: 'Se disolvio (solucion dulce)',
+    emoji: '🍬',
+    animation: 'dissolve',
+    resultColor: '#f3e5f5',
+  },
+  {
+    substance1: 'Leche',
+    substance2: 'Jabon',
+    result: 'Colores danzantes! (tension superficial)',
+    emoji: '🌈',
+    animation: 'colorChange',
+    resultColor: '#e1bee7',
+  },
+  {
+    substance1: 'Maicena',
+    substance2: 'Agua',
+    result: 'Liquido magico (no newtoniano)!',
+    emoji: '✨',
+    animation: 'curdle',
+    resultColor: '#fafafa',
+  },
+  {
+    substance1: 'Huevo',
+    substance2: 'Vinagre',
+    result: 'Huevo sin cascara (desnudo)!',
+    emoji: '🥚',
+    animation: 'dissolve',
+    resultColor: '#f9fbe7',
+  },
+  {
+    substance1: 'Col morada',
+    substance2: 'Vinagre',
+    result: 'Se volvio rosa! (indicador acido)',
+    emoji: '💗',
+    animation: 'colorChange',
+    resultColor: '#f8bbd0',
+  },
+  {
+    substance1: 'Col morada',
+    substance2: 'Bicarbonato',
+    result: 'Se volvio azul/verde! (indicador base)',
+    emoji: '💙',
+    animation: 'colorChange',
+    resultColor: '#b2dfdb',
+  },
+  {
+    substance1: 'Hielo',
+    substance2: 'Sal',
+    result: 'Se derrite mas frio!',
+    emoji: '🥶',
+    animation: 'dissolve',
+    resultColor: '#b3e5fc',
+  },
 ];
 
 const allSubstances = [...new Set(reactions.flatMap((r) => [r.substance1, r.substance2]))];
 
 const substanceEmojis: Record<string, string> = {
   Vinagre: '🍶',
-  Bicarbonato: '🧂',
+  Bicarbonato: '🥄',
   Agua: '💧',
   Sal: '🧂',
   Hierro: '🔩',
@@ -84,6 +148,12 @@ const substanceEmojis: Record<string, string> = {
   Limon: '🍋',
   Mentos: '🍬',
   'Coca Cola': '🥤',
+  Azucar: '🍯',
+  Jabon: '🧼',
+  Maicena: '🌽',
+  Huevo: '🥚',
+  'Col morada': '🥬',
+  Hielo: '🧊',
 };
 
 function Bubble({ delay, left }: { delay: number; left: number }) {
