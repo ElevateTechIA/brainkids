@@ -170,7 +170,12 @@
     "totalXp": "{xp} Total XP",
     "streak": "Streak: {count} days",
     "badges": "My Badges",
-    "noBadges": "Play to earn badges!"
+    "noBadges": "Play to earn badges!",
+    "account": "Account",
+    "changePassword": "Change password",
+    "passwordResetSent": "We sent you an email to change your password",
+    "passwordResetError": "Could not send the email. Please try again",
+    "googleAccountHint": "Your account uses Google. Manage your password from your Google account."
   },
   "parent": {
     "title": "Parent Dashboard",

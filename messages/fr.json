@@ -170,7 +170,12 @@
     "totalXp": "{xp} XP Total",
     "streak": "Serie : {count} jours",
     "badges": "Mes Badges",
-    "noBadges": "Joue pour gagner des badges !"
+    "noBadges": "Joue pour gagner des badges !",
+    "account": "Compte",
+    "changePassword": "Changer le mot de passe",
+    "passwordResetSent": "Nous t'avons envoye un email pour changer ton mot de passe",
+    "passwordResetError": "Impossible d'envoyer l'email. Reessaie",
+    "googleAccountHint": "Ton compte utilise Google. Gere ton mot de passe depuis ton compte Google."
   },
   "parent": {
     "title": "Tableau de Bord Parents",

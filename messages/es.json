@@ -170,7 +170,12 @@
     "totalXp": "{xp} XP Total",
     "streak": "Racha: {count} dias",
     "badges": "Mis Insignias",
-    "noBadges": "Juega para ganar insignias!"
+    "noBadges": "Juega para ganar insignias!",
+    "account": "Cuenta",
+    "changePassword": "Cambiar contrasena",
+    "passwordResetSent": "Te enviamos un correo para cambiar tu contrasena",
+    "passwordResetError": "No se pudo enviar el correo. Intenta de nuevo",
+    "googleAccountHint": "Tu cuenta usa Google. Administra tu contrasena desde tu cuenta de Google."
   },
   "parent": {
     "title": "Panel de Padres",

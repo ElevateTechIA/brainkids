@@ -1,17 +1,44 @@
 'use client';
 
-import { Box, Container, Typography, Card, CardContent, Stack, Avatar, Chip, LinearProgress } from '@mui/material';
+import { useState } from 'react';
+import { Box, Container, Typography, Card, CardContent, Stack, Avatar, LinearProgress, Button, Snackbar, Alert } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { usePlayerStore } from '@/lib/store/usePlayerStore';
 import { colors } from '@/lib/theme/colors';
+import { auth } from '@/lib/firebase/config';
+import { sendPasswordReset } from '@/lib/firebase/auth';
 import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import LockResetRoundedIcon from '@mui/icons-material/LockResetRounded';
 
 export default function ProfilePage() {
   const t = useTranslations();
   const { displayName, xp, level, streak } = usePlayerStore();
+  const [sending, setSending] = useState(false);
+  const [toast, setToast] = useState<{ open: boolean; severity: 'success' | 'error'; message: string }>({
+    open: false,
+    severity: 'success',
+    message: '',
+  });
+
+  const user = auth.currentUser;
+  const hasPasswordProvider = user?.providerData.some((p) => p.providerId === 'password') ?? false;
+  const isGoogleOnly = !!user && !hasPasswordProvider && user.providerData.some((p) => p.providerId === 'google.com');
+
+  const handleChangePassword = async () => {
+    if (!user?.email) return;
+    setSending(true);
+    try {
+      await sendPasswordReset(user.email);
+      setToast({ open: true, severity: 'success', message: t('profile.passwordResetSent') });
+    } catch {
+      setToast({ open: true, severity: 'error', message: t('profile.passwordResetError') });
+    } finally {
+      setSending(false);
+    }
+  };
 
   const xpForNextLevel = level * 100;
   const xpProgress = Math.min((xp / xpForNextLevel) * 100, 100);
@@ -115,7 +142,57 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
         </Stack>
+
+        {/* Account / password */}
+        {user && (
+          <Card sx={{ mb: 2 }}>
+            <CardContent>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1.5 }}>
+                {t('profile.account')}
+              </Typography>
+              {isGoogleOnly ? (
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {t('profile.googleAccountHint')}
+                </Typography>
+              ) : (
+                <Button
+                  onClick={handleChangePassword}
+                  disabled={sending || !user.email}
+                  startIcon={<LockResetRoundedIcon />}
+                  variant="outlined"
+                  fullWidth
+                  sx={{
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    borderColor: colors.primary,
+                    color: colors.primary,
+                    '&:hover': { borderColor: colors.primary, bgcolor: `${colors.primary}10` },
+                  }}
+                >
+                  {t('profile.changePassword')}
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </Container>
+
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={4000}
+        onClose={() => setToast((s) => ({ ...s, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setToast((s) => ({ ...s, open: false }))}
+          severity={toast.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {toast.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

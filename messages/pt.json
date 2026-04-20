@@ -170,7 +170,12 @@
     "totalXp": "{xp} XP Total",
     "streak": "Sequencia: {count} dias",
     "badges": "Minhas Insignias",
-    "noBadges": "Jogue para ganhar insignias!"
+    "noBadges": "Jogue para ganhar insignias!",
+    "account": "Conta",
+    "changePassword": "Alterar senha",
+    "passwordResetSent": "Enviamos um email para alterar sua senha",
+    "passwordResetError": "Nao foi possivel enviar o email. Tente novamente",
+    "googleAccountHint": "Sua conta usa o Google. Gerencie sua senha pela sua conta Google."
   },
   "parent": {
     "title": "Painel dos Pais",
