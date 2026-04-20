@@ -27,8 +27,7 @@ import { useTranslations } from 'next-intl';
 import { usePlayerStore } from '@/lib/store/usePlayerStore';
 import { logout } from '@/lib/firebase/auth';
 import { colors } from '@/lib/theme/colors';
-
-const APP_VERSION = '0.1.0';
+import { APP_VERSION, formatBuildDate } from '@/lib/version';
 
 const languages = [
   { code: 'es', flag: '🇪🇸', label: 'Espanol' },
@@ -221,6 +220,11 @@ export default function HamburgerMenu() {
               BrainKids v{APP_VERSION}
             </Typography>
           </Box>
+          {formatBuildDate(locale) && (
+            <Typography variant="caption" sx={{ color: 'text.disabled', display: 'block', mt: 0.25, fontSize: '0.7rem' }}>
+              {formatBuildDate(locale)}
+            </Typography>
+          )}
         </Box>
       </Drawer>
     </>

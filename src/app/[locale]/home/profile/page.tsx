@@ -8,6 +8,8 @@ import { usePlayerStore } from '@/lib/store/usePlayerStore';
 import { colors } from '@/lib/theme/colors';
 import { auth } from '@/lib/firebase/config';
 import { sendPasswordReset } from '@/lib/firebase/auth';
+import { APP_VERSION, formatBuildDate } from '@/lib/version';
+import { useLocale } from 'next-intl';
 import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
@@ -15,6 +17,7 @@ import LockResetRoundedIcon from '@mui/icons-material/LockResetRounded';
 
 export default function ProfilePage() {
   const t = useTranslations();
+  const locale = useLocale();
   const { displayName, xp, level, streak } = usePlayerStore();
   const [sending, setSending] = useState(false);
   const [toast, setToast] = useState<{ open: boolean; severity: 'success' | 'error'; message: string }>({
@@ -176,6 +179,16 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
         )}
+        <Box sx={{ textAlign: 'center', py: 2, opacity: 0.6 }}>
+          <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
+            BrainKids v{APP_VERSION}
+          </Typography>
+          {formatBuildDate(locale) && (
+            <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.7rem' }}>
+              {formatBuildDate(locale)}
+            </Typography>
+          )}
+        </Box>
       </Container>
 
       <Snackbar
