@@ -17,6 +17,7 @@ import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import { useEffect, useState } from 'react';
 import { useUnlocks } from '@/lib/hooks/useTokens';
 import { MODULE_COSTS, ModuleId } from '@/lib/tokens/config';
+import TokenBadge from '@/components/tokens/TokenBadge';
 
 export default function DashboardPage() {
   const t = useTranslations();
@@ -45,7 +46,7 @@ export default function DashboardPage() {
           <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5, pr: 6 }}>
             {name ? t('home.welcome', { name }) : t('home.welcomeDefault')}
           </Typography>
-          <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+          <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap', gap: 1 }}>
             <Chip
               label={t('home.level', { level })}
               sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'white', fontWeight: 700 }}
@@ -62,6 +63,7 @@ export default function DashboardPage() {
                 sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'white', fontWeight: 700 }}
               />
             )}
+            <TokenBadge variant="header" />
           </Stack>
         </motion.div>
       </Box>

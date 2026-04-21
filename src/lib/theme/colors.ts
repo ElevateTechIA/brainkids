@@ -31,6 +31,14 @@ export const colors = {
   error: '#ff6b6b',
   warning: '#ffd93d',
 
+  // Token tiers
+  tokenCopper: '#cd7f32',
+  tokenCopperLight: '#e4a668',
+  tokenSilver: '#a8adb4',
+  tokenSilverLight: '#d4d7dc',
+  tokenGold: '#d4af37',
+  tokenGoldLight: '#f5d76e',
+
   // Text
   textPrimary: '#2d3436',
   textSecondary: '#636e72',

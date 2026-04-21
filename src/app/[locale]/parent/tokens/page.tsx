@@ -17,11 +17,13 @@ import { motion } from 'framer-motion';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import LocalAtmRoundedIcon from '@mui/icons-material/LocalAtmRounded';
+import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
 import { colors } from '@/lib/theme/colors';
 import { PACKAGES } from '@/lib/tokens/config';
 import { useBalance } from '@/lib/hooks/useTokens';
 import { postCheckoutSession } from '@/lib/api-client';
 import ShareAppModal from '@/components/share/ShareAppModal';
+import { getTokenTier, getTierColors } from '@/lib/tokens/tier';
 
 export default function ParentTokensPage() {
   const t = useTranslations();
@@ -65,28 +67,56 @@ export default function ParentTokensPage() {
           </Typography>
         </Stack>
 
-        <Card
-          sx={{
-            bgcolor: 'rgba(255,255,255,0.18)',
-            color: 'white',
-            p: 2.5,
-            borderRadius: 3,
-            border: '1px solid rgba(255,255,255,0.3)',
-            boxShadow: 'none',
-          }}
-        >
-          <Typography variant="caption" sx={{ opacity: 0.85, fontWeight: 600 }}>
-            {t('tokens.yourBalance')}
-          </Typography>
-          <Stack direction="row" alignItems="baseline" spacing={1} sx={{ mt: 0.5 }}>
-            <Typography variant="h3" sx={{ fontWeight: 800 }}>
-              {balance ?? '—'}
-            </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.9 }}>
-              {t('tokens.tokens')}
-            </Typography>
-          </Stack>
-        </Card>
+        {(() => {
+          const safeBalance = balance ?? 0;
+          const tier = getTokenTier(safeBalance);
+          const tierC = getTierColors(tier);
+          return (
+            <Card
+              sx={{
+                bgcolor: 'rgba(255,255,255,0.18)',
+                color: 'white',
+                p: 2.5,
+                borderRadius: 3,
+                border: `1.5px solid ${tierC.light}`,
+                boxShadow: `0 6px 20px ${tierC.main}55`,
+              }}
+            >
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Box>
+                  <Typography variant="caption" sx={{ opacity: 0.85, fontWeight: 600 }}>
+                    {t('tokens.yourBalance')}
+                  </Typography>
+                  <Stack direction="row" alignItems="baseline" spacing={1} sx={{ mt: 0.5 }}>
+                    <Typography variant="h3" sx={{ fontWeight: 800 }}>
+                      {balance ?? '—'}
+                    </Typography>
+                    <Typography variant="body1" sx={{ opacity: 0.9 }}>
+                      {t('tokens.tokens')}
+                    </Typography>
+                  </Stack>
+                  <Typography variant="caption" sx={{ fontWeight: 700, color: tierC.light, letterSpacing: 1, textTransform: 'uppercase' }}>
+                    {tier}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, ${tierC.light}, ${tierC.main})`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: `inset 0 -4px 8px rgba(0,0,0,0.2), 0 4px 12px ${tierC.main}88`,
+                  }}
+                >
+                  <MonetizationOnRoundedIcon sx={{ fontSize: 40, color: 'white', filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }} />
+                </Box>
+              </Stack>
+            </Card>
+          );
+        })()}
       </Box>
 
       <Container maxWidth="sm" sx={{ mt: 3 }}>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import {
-  IconButton,
+  ButtonBase,
   Drawer,
   Box,
   Typography,
@@ -14,8 +14,9 @@ import {
   ListItemIcon,
   ListItemText,
   Chip,
+  Tooltip,
 } from '@mui/material';
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
@@ -32,6 +33,7 @@ import { colors } from '@/lib/theme/colors';
 import { APP_VERSION, formatBuildDate } from '@/lib/version';
 import ShareAppModal from '@/components/share/ShareAppModal';
 import { useBalance } from '@/lib/hooks/useTokens';
+import { getTokenTier, getTierColors } from '@/lib/tokens/tier';
 
 const languages = [
   { code: 'es', flag: '🇪🇸', label: 'Espanol' },
@@ -79,18 +81,40 @@ export default function HamburgerMenu() {
     setShareOpen(true);
   };
 
+  const tier = balance !== null ? getTokenTier(balance) : null;
+  const tierColors = tier ? getTierColors(tier) : null;
+
   return (
     <>
-      <IconButton
-        onClick={() => setOpen(true)}
-        sx={{
-          color: 'white',
-          bgcolor: 'rgba(255,255,255,0.15)',
-          '&:hover': { bgcolor: 'rgba(255,255,255,0.25)' },
-        }}
-      >
-        <MenuRoundedIcon />
-      </IconButton>
+      <Tooltip title={tier ? `${tier.toUpperCase()} tier` : ''} arrow>
+        <ButtonBase
+          onClick={() => setOpen(true)}
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 0.75,
+            px: 1.5,
+            py: 0.75,
+            borderRadius: 999,
+            bgcolor: 'rgba(255,255,255,0.2)',
+            border: tierColors ? `1px solid ${tierColors.light}` : '1px solid rgba(255,255,255,0.3)',
+            backdropFilter: 'blur(8px)',
+            transition: 'all 0.2s',
+            '&:hover': { bgcolor: 'rgba(255,255,255,0.3)', transform: 'translateY(-1px)' },
+          }}
+        >
+          <MonetizationOnRoundedIcon
+            sx={{
+              fontSize: '1.2rem',
+              color: tierColors?.main ?? 'white',
+              filter: tierColors ? `drop-shadow(0 1px 2px ${tierColors.main}66)` : undefined,
+            }}
+          />
+          <Typography sx={{ color: 'white', fontWeight: 800, fontSize: '0.9rem', lineHeight: 1 }}>
+            {balance ?? 0}
+          </Typography>
+        </ButtonBase>
+      </Tooltip>
 
       <Drawer
         anchor="right"
@@ -166,20 +190,27 @@ export default function HamburgerMenu() {
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton onClick={handleTokens} sx={{ borderRadius: 2, mb: 0.5 }}>
-              <ListItemIcon sx={{ minWidth: 40 }}>
-                <LocalAtmRoundedIcon sx={{ color: colors.primary }} />
-              </ListItemIcon>
-              <ListItemText
-                primary={t('tokens.title')}
-                primaryTypographyProps={{ fontWeight: 600 }}
-              />
-              {balance !== null && (
-                <Chip
-                  label={balance}
-                  size="small"
-                  sx={{ bgcolor: `${colors.primary}18`, color: colors.primary, fontWeight: 700 }}
-                />
-              )}
+              {(() => {
+                const tierColor = balance !== null ? getTierColors(getTokenTier(balance)).main : colors.primary;
+                return (
+                  <>
+                    <ListItemIcon sx={{ minWidth: 40 }}>
+                      <LocalAtmRoundedIcon sx={{ color: tierColor }} />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={t('tokens.title')}
+                      primaryTypographyProps={{ fontWeight: 600 }}
+                    />
+                    {balance !== null && (
+                      <Chip
+                        label={balance}
+                        size="small"
+                        sx={{ bgcolor: `${tierColor}22`, color: tierColor, fontWeight: 800, border: `1.5px solid ${tierColor}` }}
+                      />
+                    )}
+                  </>
+                );
+              })()}
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
