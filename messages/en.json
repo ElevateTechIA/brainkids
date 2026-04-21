@@ -23,7 +23,8 @@
     "streak": "{count} days in a row!",
     "level": "Level {level}",
     "xp": "{xp} XP",
-    "advanced": "Advanced"
+    "advanced": "Advanced",
+    "tapToUnlock": "Tap to unlock"
   },
   "subjects": {
     "reading": {
@@ -196,5 +197,109 @@
     "progress": "Progress",
     "strengths": "Strengths",
     "needsPractice": "Needs practice"
+  },
+  "tokens": {
+    "title": "Tokens",
+    "tokens": "tokens",
+    "yourBalance": "Your balance",
+    "buyPacks": "Buy tokens",
+    "shareToEarn": "Share the app and earn 5 tokens",
+    "bestValue": "Best value",
+    "successTitle": "Purchase successful!",
+    "successBody": "Your tokens are now in your account.",
+    "cancelTitle": "Purchase cancelled",
+    "cancelBody": "You weren't charged. You can try again whenever you want.",
+    "backToTokens": "Back to tokens",
+    "backToHome": "Go to home",
+    "errorCheckout": "Could not start checkout. Please try again.",
+    "disclaimer": "1 token = 1 USD. Secure payments via Stripe."
+  },
+  "share": {
+    "menuItem": "Share app",
+    "title": "Share BrainKids",
+    "subtitle": "When a friend signs up with your link, they get 20 tokens and you get 5.",
+    "inviteText": "Check out BrainKids! Game-based learning for kids. Use my link and we both get tokens:",
+    "copy": "Copy link",
+    "copied": "Copied!",
+    "share": "Share",
+    "downloadQr": "Download QR",
+    "reward": "You and your friend both get tokens at first signup."
+  },
+  "unlock": {
+    "gateTitle": "Parents only",
+    "gateSubtitle": "To unlock {module} solve this. Ask mom or dad.",
+    "gateContinue": "Continue",
+    "gateWrong": "Wrong answer. Try another.",
+    "confirmTitle": "Unlock {module}",
+    "cost": "Cost",
+    "yourBalance": "Your balance",
+    "afterUnlock": "After",
+    "notEnough": "Not enough tokens. Buy more to continue.",
+    "cancel": "Cancel",
+    "unlock": "Unlock",
+    "buyTokens": "Buy tokens",
+    "successTitle": "Unlocked!",
+    "successBody": "The module is now available.",
+    "errorTitle": "Something went wrong",
+    "errorBody": "Try again in a moment.",
+    "insufficientBody": "You need {needed} tokens but only have {balance}.",
+    "close": "Close"
+  },
+  "placeholder": {
+    "unlockedSoon": "Unlocked! Initiations for this module will be available very soon.",
+    "back": "Back"
+  },
+  "sadhanaContent": {
+    "introTitle": "Belly Breathing",
+    "introBody": "A simple practice to calm your mind and feel your body.",
+    "step1": "Sit comfortably with your back straight",
+    "step2": "Put one hand on your belly",
+    "step3": "Breathe deep, feel your hand rise and fall",
+    "start": "Start",
+    "breathOf": "Breath {current} of {total}",
+    "inhale": "Inhale",
+    "hold": "Hold",
+    "exhale": "Exhale",
+    "hintInhale": "Fill your belly with air, like a balloon",
+    "hintHold": "Stay still and feel",
+    "hintExhale": "Let the air out very slowly",
+    "doneTitle": "Well done!",
+    "doneBody": "Your mind and body feel a little more peaceful.",
+    "home": "Home",
+    "again": "Again"
+  },
+  "philosophyContent": {
+    "introTitle": "Who am I?",
+    "introBody": "One of the biggest questions in the universe. Let's explore it together.",
+    "start": "Begin",
+    "questionOf": "Question {current} of {total}",
+    "option": {
+      "yes": "Yes",
+      "no": "No",
+      "maybe": "Not sure"
+    },
+    "q": {
+      "name": {
+        "title": "Are you your name?",
+        "body": "If you change your name tomorrow, are you still you?"
+      },
+      "body": {
+        "title": "Are you your body?",
+        "body": "Your body changes every year. As a baby you were very different. Are you still the same?"
+      },
+      "feelings": {
+        "title": "Are you your feelings?",
+        "body": "Sometimes you're happy, sometimes sad. Are you a different person when they change?"
+      },
+      "thoughts": {
+        "title": "Are you your thoughts?",
+        "body": "Your ideas change all the time. If your thoughts change, are you still you?"
+      }
+    },
+    "reflectionTitle": "Something to think about...",
+    "reflectionQuote": "There is something in you that is always you, no matter what changes.",
+    "reflectionBody": "Philosophers have been asking this question for thousands of years. There's no right answer. What matters is to keep asking.",
+    "home": "Home",
+    "again": "Again"
   }
 }

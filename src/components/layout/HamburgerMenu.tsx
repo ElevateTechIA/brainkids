@@ -22,12 +22,16 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
+import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
+import LocalAtmRoundedIcon from '@mui/icons-material/LocalAtmRounded';
 import { useRouter, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { usePlayerStore } from '@/lib/store/usePlayerStore';
 import { logout } from '@/lib/firebase/auth';
 import { colors } from '@/lib/theme/colors';
 import { APP_VERSION, formatBuildDate } from '@/lib/version';
+import ShareAppModal from '@/components/share/ShareAppModal';
+import { useBalance } from '@/lib/hooks/useTokens';
 
 const languages = [
   { code: 'es', flag: '🇪🇸', label: 'Espanol' },
@@ -40,11 +44,13 @@ const avatars = ['🧒', '👧', '🦸', '🧑‍🚀', '🧑‍🔬', '🧙', '
 
 export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
   const locale = pathname.split('/')[1] || 'es';
   const { displayName, avatarId, xp, level, streak } = usePlayerStore();
+  const balance = useBalance();
 
   const handleLanguageChange = (code: string) => {
     const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, '');
@@ -61,6 +67,16 @@ export default function HamburgerMenu() {
   const handleProfile = () => {
     router.push(`/${locale}/home/profile`);
     setOpen(false);
+  };
+
+  const handleTokens = () => {
+    router.push(`/${locale}/parent/tokens`);
+    setOpen(false);
+  };
+
+  const handleShare = () => {
+    setOpen(false);
+    setShareOpen(true);
   };
 
   return (
@@ -148,6 +164,35 @@ export default function HamburgerMenu() {
               />
             </ListItemButton>
           </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleTokens} sx={{ borderRadius: 2, mb: 0.5 }}>
+              <ListItemIcon sx={{ minWidth: 40 }}>
+                <LocalAtmRoundedIcon sx={{ color: colors.primary }} />
+              </ListItemIcon>
+              <ListItemText
+                primary={t('tokens.title')}
+                primaryTypographyProps={{ fontWeight: 600 }}
+              />
+              {balance !== null && (
+                <Chip
+                  label={balance}
+                  size="small"
+                  sx={{ bgcolor: `${colors.primary}18`, color: colors.primary, fontWeight: 700 }}
+                />
+              )}
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleShare} sx={{ borderRadius: 2, mb: 0.5 }}>
+              <ListItemIcon sx={{ minWidth: 40 }}>
+                <ShareRoundedIcon sx={{ color: colors.primary }} />
+              </ListItemIcon>
+              <ListItemText
+                primary={t('share.menuItem')}
+                primaryTypographyProps={{ fontWeight: 600 }}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
 
         <Divider sx={{ mx: 2 }} />
@@ -227,6 +272,8 @@ export default function HamburgerMenu() {
           )}
         </Box>
       </Drawer>
+
+      <ShareAppModal open={shareOpen} onClose={() => setShareOpen(false)} />
     </>
   );
 }

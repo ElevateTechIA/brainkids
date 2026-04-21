@@ -9,6 +9,9 @@ import { useRouter, usePathname } from 'next/navigation';
 import { usePlayerStore } from '@/lib/store/usePlayerStore';
 import { colors } from '@/lib/theme/colors';
 import { useEffect, useState } from 'react';
+import { captureReferralFromUrl, getStoredReferral, clearStoredReferral } from '@/lib/referral';
+import { getDeviceId } from '@/lib/device-fingerprint';
+import { postRegister } from '@/lib/api-client';
 
 export default function LoginPage() {
   const t = useTranslations('auth');
@@ -27,11 +30,20 @@ export default function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    const unsub = onAuthChange((user) => {
+    captureReferralFromUrl();
+    const unsub = onAuthChange(async (user) => {
       if (user) {
         setUid(user.uid);
         if (user.displayName) {
           setProfile(user.displayName, 0);
+        }
+        try {
+          const deviceId = await getDeviceId();
+          const referrerUid = getStoredReferral();
+          await postRegister(deviceId, referrerUid);
+          clearStoredReferral();
+        } catch (err) {
+          console.error('register sync failed', err);
         }
         router.push(`/${locale}/home`);
       }
@@ -40,11 +52,23 @@ export default function LoginPage() {
     return unsub;
   }, [locale, router, setUid, setProfile]);
 
+  const finishSignup = async () => {
+    try {
+      const deviceId = await getDeviceId();
+      const referrerUid = getStoredReferral();
+      await postRegister(deviceId, referrerUid);
+      clearStoredReferral();
+    } catch (err) {
+      console.error('register call failed', err);
+    }
+  };
+
   const handleGoogle = async () => {
     try {
       const user = await signInWithGoogle();
       setUid(user.uid);
       if (user.displayName) setProfile(user.displayName, 0);
+      await finishSignup();
       router.push(`/${locale}/home`);
     } catch (err) {
       console.error('Google sign-in error:', err);
@@ -77,6 +101,7 @@ export default function LoginPage() {
       }
       setUid(user.uid);
       if (user.displayName) setProfile(user.displayName, 0);
+      await finishSignup();
       router.push(`/${locale}/home`);
     } catch (err: unknown) {
       const firebaseErr = err as { code?: string };

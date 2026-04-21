@@ -23,7 +23,8 @@
     "streak": "{count} jours de suite !",
     "level": "Niveau {level}",
     "xp": "{xp} XP",
-    "advanced": "Avance"
+    "advanced": "Avance",
+    "tapToUnlock": "Touche pour debloquer"
   },
   "subjects": {
     "reading": {
@@ -196,5 +197,109 @@
     "progress": "Progres",
     "strengths": "Points forts",
     "needsPractice": "A pratiquer"
+  },
+  "tokens": {
+    "title": "Jetons",
+    "tokens": "jetons",
+    "yourBalance": "Ton solde",
+    "buyPacks": "Acheter des jetons",
+    "shareToEarn": "Partage l'app et gagne 5 jetons",
+    "bestValue": "Meilleure offre",
+    "successTitle": "Achat reussi !",
+    "successBody": "Tes jetons sont sur ton compte.",
+    "cancelTitle": "Achat annule",
+    "cancelBody": "Rien n'a ete preleve. Tu peux reessayer quand tu veux.",
+    "backToTokens": "Retour aux jetons",
+    "backToHome": "Aller a l'accueil",
+    "errorCheckout": "Impossible de demarrer le paiement. Reessaie.",
+    "disclaimer": "1 jeton = 1 USD. Paiements securises par Stripe."
+  },
+  "share": {
+    "menuItem": "Partager l'app",
+    "title": "Partage BrainKids",
+    "subtitle": "Quand un ami s'inscrit avec ton lien, il recoit 20 jetons et toi 5.",
+    "inviteText": "Regarde BrainKids ! Apprentissage ludique pour les enfants. Utilise mon lien et on recoit tous les deux des jetons :",
+    "copy": "Copier le lien",
+    "copied": "Copie !",
+    "share": "Partager",
+    "downloadQr": "Telecharger QR",
+    "reward": "Toi et ton ami recevez des jetons a la premiere inscription."
+  },
+  "unlock": {
+    "gateTitle": "Pour les parents",
+    "gateSubtitle": "Pour debloquer {module}, resous ceci. Demande a papa ou maman.",
+    "gateContinue": "Continuer",
+    "gateWrong": "Mauvaise reponse. Essaie une autre.",
+    "confirmTitle": "Debloquer {module}",
+    "cost": "Cout",
+    "yourBalance": "Ton solde",
+    "afterUnlock": "Apres",
+    "notEnough": "Pas assez de jetons. Achete-en pour continuer.",
+    "cancel": "Annuler",
+    "unlock": "Debloquer",
+    "buyTokens": "Acheter des jetons",
+    "successTitle": "Debloque !",
+    "successBody": "Le module est maintenant disponible.",
+    "errorTitle": "Quelque chose s'est mal passe",
+    "errorBody": "Reessaie dans un instant.",
+    "insufficientBody": "Il te faut {needed} jetons mais tu n'en as que {balance}.",
+    "close": "Fermer"
+  },
+  "placeholder": {
+    "unlockedSoon": "Debloque ! Les initiations pour ce module seront bientot disponibles.",
+    "back": "Retour"
+  },
+  "sadhanaContent": {
+    "introTitle": "Respiration du Ventre",
+    "introBody": "Une pratique simple pour calmer l'esprit et sentir ton corps.",
+    "step1": "Assieds-toi confortablement, le dos droit",
+    "step2": "Pose une main sur ton ventre",
+    "step3": "Respire profondement, sens ta main monter et descendre",
+    "start": "Commencer",
+    "breathOf": "Respiration {current} sur {total}",
+    "inhale": "Inspire",
+    "hold": "Retiens",
+    "exhale": "Expire",
+    "hintInhale": "Remplis ton ventre d'air, comme un ballon",
+    "hintHold": "Reste immobile et ressens",
+    "hintExhale": "Laisse l'air sortir tres lentement",
+    "doneTitle": "Bravo !",
+    "doneBody": "Ton esprit et ton corps se sentent un peu plus calmes.",
+    "home": "Accueil",
+    "again": "Recommencer"
+  },
+  "philosophyContent": {
+    "introTitle": "Qui suis-je ?",
+    "introBody": "Une des plus grandes questions de l'univers. Explorons-la ensemble.",
+    "start": "Commencer",
+    "questionOf": "Question {current} sur {total}",
+    "option": {
+      "yes": "Oui",
+      "no": "Non",
+      "maybe": "Je ne sais pas"
+    },
+    "q": {
+      "name": {
+        "title": "Es-tu ton nom ?",
+        "body": "Si demain tu changes de nom, restes-tu toi-meme ?"
+      },
+      "body": {
+        "title": "Es-tu ton corps ?",
+        "body": "Ton corps change chaque annee. Bebe, tu etais tres different. Es-tu toujours le meme ?"
+      },
+      "feelings": {
+        "title": "Es-tu tes sentiments ?",
+        "body": "Parfois tu es heureux, parfois triste. Es-tu une personne differente quand ils changent ?"
+      },
+      "thoughts": {
+        "title": "Es-tu tes pensees ?",
+        "body": "Tes idees changent tout le temps. Si tes pensees changent, restes-tu toi-meme ?"
+      }
+    },
+    "reflectionTitle": "Quelque chose a mediter...",
+    "reflectionQuote": "Il y a quelque chose en toi qui est toujours toi, peu importe ce qui change.",
+    "reflectionBody": "Les philosophes posent cette question depuis des milliers d'annees. Il n'y a pas de bonne reponse. L'important est de continuer a se poser la question.",
+    "home": "Accueil",
+    "again": "Recommencer"
   }
 }

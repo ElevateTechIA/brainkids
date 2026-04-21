@@ -23,7 +23,8 @@
     "streak": "{count} dias seguidos!",
     "level": "Nivel {level}",
     "xp": "{xp} XP",
-    "advanced": "Avanzado"
+    "advanced": "Avanzado",
+    "tapToUnlock": "Toca para desbloquear"
   },
   "subjects": {
     "reading": {
@@ -196,5 +197,109 @@
     "progress": "Progreso",
     "strengths": "Fortalezas",
     "needsPractice": "Necesita practica"
+  },
+  "tokens": {
+    "title": "Tokens",
+    "tokens": "tokens",
+    "yourBalance": "Tu balance",
+    "buyPacks": "Comprar tokens",
+    "shareToEarn": "Comparte la app y gana 5 tokens",
+    "bestValue": "Mejor valor",
+    "successTitle": "Compra exitosa!",
+    "successBody": "Tus tokens ya estan en tu cuenta.",
+    "cancelTitle": "Compra cancelada",
+    "cancelBody": "No se ha cobrado nada. Puedes intentarlo cuando quieras.",
+    "backToTokens": "Volver a tokens",
+    "backToHome": "Ir al inicio",
+    "errorCheckout": "No se pudo iniciar el pago. Intenta de nuevo.",
+    "disclaimer": "1 token = 1 USD. Pagos seguros con Stripe."
+  },
+  "share": {
+    "menuItem": "Compartir app",
+    "title": "Comparte BrainKids",
+    "subtitle": "Cuando un amigo se registra con tu link, le regalan 20 tokens y tu recibes 5.",
+    "inviteText": "Mira BrainKids! Aprendizaje con juegos para los peques. Usa mi link y ambos recibimos tokens:",
+    "copy": "Copiar link",
+    "copied": "Copiado!",
+    "share": "Compartir",
+    "downloadQr": "Descargar QR",
+    "reward": "Tu y tu amigo reciben tokens al primer registro."
+  },
+  "unlock": {
+    "gateTitle": "Solo para papas",
+    "gateSubtitle": "Para desbloquear {module} resuelve esta operacion. Pidesela a papa o mama.",
+    "gateContinue": "Continuar",
+    "gateWrong": "Respuesta incorrecta. Intenta otra.",
+    "confirmTitle": "Desbloquear {module}",
+    "cost": "Costo",
+    "yourBalance": "Tu balance",
+    "afterUnlock": "Despues",
+    "notEnough": "No tienes suficientes tokens. Compra mas para continuar.",
+    "cancel": "Cancelar",
+    "unlock": "Desbloquear",
+    "buyTokens": "Comprar tokens",
+    "successTitle": "Desbloqueado!",
+    "successBody": "El modulo ya esta disponible.",
+    "errorTitle": "Algo salio mal",
+    "errorBody": "Intenta de nuevo en un momento.",
+    "insufficientBody": "Necesitas {needed} tokens y solo tienes {balance}.",
+    "close": "Cerrar"
+  },
+  "placeholder": {
+    "unlockedSoon": "Desbloqueado! Las iniciaciones para este modulo estaran disponibles muy pronto.",
+    "back": "Volver"
+  },
+  "sadhanaContent": {
+    "introTitle": "Respiracion del Vientre",
+    "introBody": "Una practica simple para calmar la mente y sentir tu cuerpo.",
+    "step1": "Sientate comodo con la espalda recta",
+    "step2": "Pon una mano en tu vientre",
+    "step3": "Respira profundo, siente como tu mano sube y baja",
+    "start": "Comenzar",
+    "breathOf": "Respiracion {current} de {total}",
+    "inhale": "Inhala",
+    "hold": "Sostenelo",
+    "exhale": "Exhala",
+    "hintInhale": "Llena tu vientre de aire, como un globo",
+    "hintHold": "Quedate quieto y siente",
+    "hintExhale": "Suelta el aire muy despacio",
+    "doneTitle": "Bien hecho!",
+    "doneBody": "Tu mente y tu cuerpo se sienten un poco mas tranquilos.",
+    "home": "Inicio",
+    "again": "Otra vez"
+  },
+  "philosophyContent": {
+    "introTitle": "Quien soy yo?",
+    "introBody": "Una de las preguntas mas importantes del universo. Vamos a explorarla juntos.",
+    "start": "Empezar",
+    "questionOf": "Pregunta {current} de {total}",
+    "option": {
+      "yes": "Si",
+      "no": "No",
+      "maybe": "No estoy seguro"
+    },
+    "q": {
+      "name": {
+        "title": "Eres tu nombre?",
+        "body": "Si manana cambias tu nombre, sigues siendo tu?"
+      },
+      "body": {
+        "title": "Eres tu cuerpo?",
+        "body": "Tu cuerpo cambia cada anio. Cuando eras bebe eras muy distinto. Sigues siendo el mismo?"
+      },
+      "feelings": {
+        "title": "Eres tus sentimientos?",
+        "body": "A veces estas feliz, a veces triste. Eres una persona diferente cuando cambian?"
+      },
+      "thoughts": {
+        "title": "Eres tus pensamientos?",
+        "body": "Tus ideas cambian todo el tiempo. Si tus pensamientos cambian, sigues siendo tu?"
+      }
+    },
+    "reflectionTitle": "Algo que pensar...",
+    "reflectionQuote": "Hay algo en ti que es siempre tu, sin importar lo que cambia.",
+    "reflectionBody": "Los filosofos llevan miles de anios haciendose esta pregunta. No hay una respuesta correcta. Lo importante es seguir preguntando.",
+    "home": "Inicio",
+    "again": "Otra vez"
   }
 }

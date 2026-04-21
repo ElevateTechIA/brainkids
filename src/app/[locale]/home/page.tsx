@@ -4,6 +4,7 @@ import { Box, Container, Typography, Chip, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import SubjectCard from '@/components/layout/SubjectCard';
+import UnlockModuleModal from '@/components/tokens/UnlockModuleModal';
 import { usePlayerStore } from '@/lib/store/usePlayerStore';
 import { colors } from '@/lib/theme/colors';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
@@ -13,11 +14,15 @@ import BiotechRoundedIcon from '@mui/icons-material/BiotechRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
 import SelfImprovementRoundedIcon from '@mui/icons-material/SelfImprovementRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useUnlocks } from '@/lib/hooks/useTokens';
+import { MODULE_COSTS, ModuleId } from '@/lib/tokens/config';
 
 export default function DashboardPage() {
   const t = useTranslations();
   const { displayName, xp, level, streak, updateStreak } = usePlayerStore();
+  const unlocks = useUnlocks();
+  const [unlockTarget, setUnlockTarget] = useState<{ id: ModuleId; title: string; color: string } | null>(null);
 
   useEffect(() => {
     updateStreak();
@@ -27,7 +32,6 @@ export default function DashboardPage() {
 
   return (
     <Box sx={{ bgcolor: colors.background, minHeight: '100vh' }}>
-      {/* Header */}
       <Box
         sx={{
           background: `linear-gradient(135deg, ${colors.primary}, ${colors.primaryLight})`,
@@ -132,10 +136,11 @@ export default function DashboardPage() {
               color={colors.sadhana}
               colorLight={colors.sadhanaLight}
               path="/sadhana"
-              gamesCount={0}
               progress={0}
-              comingSoon
-              comingSoonLabel={t('common.comingSoon')}
+              cost={MODULE_COSTS.sadhana}
+              unlocked={unlocks.has('sadhana')}
+              lockedLabel={t('home.tapToUnlock')}
+              onLockedClick={() => setUnlockTarget({ id: 'sadhana', title: t('subjects.sadhana.title'), color: colors.sadhana })}
             />
           </motion.div>
 
@@ -147,14 +152,23 @@ export default function DashboardPage() {
               color={colors.philosophy}
               colorLight={colors.philosophyLight}
               path="/philosophy"
-              gamesCount={0}
               progress={0}
-              comingSoon
-              comingSoonLabel={t('common.comingSoon')}
+              cost={MODULE_COSTS.philosophy}
+              unlocked={unlocks.has('philosophy')}
+              lockedLabel={t('home.tapToUnlock')}
+              onLockedClick={() => setUnlockTarget({ id: 'philosophy', title: t('subjects.philosophy.title'), color: colors.philosophy })}
             />
           </motion.div>
         </Stack>
       </Container>
+
+      <UnlockModuleModal
+        open={unlockTarget !== null}
+        moduleId={unlockTarget?.id ?? null}
+        moduleTitle={unlockTarget?.title ?? ''}
+        moduleColor={unlockTarget?.color ?? colors.primary}
+        onClose={() => setUnlockTarget(null)}
+      />
     </Box>
   );
 }

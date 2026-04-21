@@ -8,9 +8,47 @@ service cloud.firestore {
     }
 
     // Battleship game rooms - any authenticated user can read/write
-    // (players need to read opponent data and write their own moves)
     match /battleship_games/{roomCode} {
       allow read, write: if request.auth != null;
+    }
+
+    // Token balance - readable by owner only, writes only via Admin SDK (server)
+    match /user-credits/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Module unlocks - readable by owner only, writes only via Admin SDK
+    match /user-unlocks/{uid}/modules/{moduleId} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Token packages - public read, no client writes
+    match /credit-packages/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Transactions - readable by owner, writes only via Admin SDK
+    match /transactions/{id} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    // Stripe checkout sessions - server only
+    match /checkout-sessions/{id} {
+      allow read, write: if false;
+    }
+
+    // Referrals - server only
+    match /referrals/{id} {
+      allow read, write: if false;
+    }
+
+    // Device claims (anti-farming) - server only
+    match /device-claims/{deviceId} {
+      allow read, write: if false;
     }
   }
 }
