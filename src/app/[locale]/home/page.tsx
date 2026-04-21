@@ -11,6 +11,8 @@ import CalculateRoundedIcon from '@mui/icons-material/CalculateRounded';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import BiotechRoundedIcon from '@mui/icons-material/BiotechRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
+import SelfImprovementRoundedIcon from '@mui/icons-material/SelfImprovementRounded';
+import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import { useEffect } from 'react';
 
 export default function DashboardPage() {
@@ -115,6 +117,40 @@ export default function DashboardPage() {
               path="/chemistry"
               gamesCount={3}
               progress={0}
+            />
+          </motion.div>
+
+          <Typography variant="h6" sx={{ fontWeight: 700, mt: 2, mb: 0.5, color: 'text.primary' }}>
+            {t('home.advanced')}
+          </Typography>
+
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
+            <SubjectCard
+              title={t('subjects.sadhana.title')}
+              description={t('subjects.sadhana.description')}
+              icon={<SelfImprovementRoundedIcon fontSize="large" />}
+              color={colors.sadhana}
+              colorLight={colors.sadhanaLight}
+              path="/sadhana"
+              gamesCount={0}
+              progress={0}
+              comingSoon
+              comingSoonLabel={t('common.comingSoon')}
+            />
+          </motion.div>
+
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.6 }}>
+            <SubjectCard
+              title={t('subjects.philosophy.title')}
+              description={t('subjects.philosophy.description')}
+              icon={<PsychologyRoundedIcon fontSize="large" />}
+              color={colors.philosophy}
+              colorLight={colors.philosophyLight}
+              path="/philosophy"
+              gamesCount={0}
+              progress={0}
+              comingSoon
+              comingSoonLabel={t('common.comingSoon')}
             />
           </motion.div>
         </Stack>

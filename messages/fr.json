@@ -11,6 +11,9 @@
     "chemistry": "Chimie",
     "profile": "Profil"
   },
+  "common": {
+    "comingSoon": "Bientot disponible"
+  },
   "home": {
     "welcome": "Salut, {name} !",
     "welcomeDefault": "Salut, Explorateur !",
@@ -19,7 +22,8 @@
     "dailyChallenge": "Defi du Jour",
     "streak": "{count} jours de suite !",
     "level": "Niveau {level}",
-    "xp": "{xp} XP"
+    "xp": "{xp} XP",
+    "advanced": "Avance"
   },
   "subjects": {
     "reading": {
@@ -37,6 +41,14 @@
     "chemistry": {
       "title": "Chimie",
       "description": "Elements, melanges et reactions"
+    },
+    "sadhana": {
+      "title": "Sadhanas",
+      "description": "Pratiques pour le mental, le corps et l'energie"
+    },
+    "philosophy": {
+      "title": "Philosophie",
+      "description": "Grandes questions et l'art de mieux penser"
     }
   },
   "games": {

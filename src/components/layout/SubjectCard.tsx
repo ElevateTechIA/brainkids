@@ -14,6 +14,8 @@ interface SubjectCardProps {
   path: string;
   progress?: number;
   gamesCount?: number;
+  comingSoon?: boolean;
+  comingSoonLabel?: string;
 }
 
 export default function SubjectCard({
@@ -25,6 +27,8 @@ export default function SubjectCard({
   path,
   progress = 0,
   gamesCount = 0,
+  comingSoon = false,
+  comingSoonLabel,
 }: SubjectCardProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -32,17 +36,41 @@ export default function SubjectCard({
 
   return (
     <motion.div
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={comingSoon ? undefined : { scale: 1.03 }}
+      whileTap={comingSoon ? undefined : { scale: 0.97 }}
     >
       <Card
         sx={{
           background: `linear-gradient(135deg, ${colorLight}22, ${color}11)`,
           border: `2px solid ${color}33`,
           overflow: 'visible',
+          position: 'relative',
+          opacity: comingSoon ? 0.75 : 1,
         }}
       >
-        <CardActionArea onClick={() => router.push(`/${locale}/home${path}`)}>
+        {comingSoon && comingSoonLabel && (
+          <Chip
+            label={comingSoonLabel}
+            size="small"
+            sx={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              bgcolor: color,
+              color: 'white',
+              fontWeight: 700,
+              fontSize: '0.7rem',
+              zIndex: 2,
+              boxShadow: `0 2px 6px ${color}66`,
+            }}
+          />
+        )}
+        <CardActionArea
+          disabled={comingSoon}
+          onClick={() => {
+            if (!comingSoon) router.push(`/${locale}/home${path}`);
+          }}
+        >
           <CardContent sx={{ p: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1.5 }}>
               <Box

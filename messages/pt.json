@@ -11,6 +11,9 @@
     "chemistry": "Quimica",
     "profile": "Perfil"
   },
+  "common": {
+    "comingSoon": "Em breve"
+  },
   "home": {
     "welcome": "Ola, {name}!",
     "welcomeDefault": "Ola, Explorador!",
@@ -19,7 +22,8 @@
     "dailyChallenge": "Desafio do Dia",
     "streak": "{count} dias seguidos!",
     "level": "Nivel {level}",
-    "xp": "{xp} XP"
+    "xp": "{xp} XP",
+    "advanced": "Avancado"
   },
   "subjects": {
     "reading": {
@@ -37,6 +41,14 @@
     "chemistry": {
       "title": "Quimica",
       "description": "Elementos, misturas e reacoes"
+    },
+    "sadhana": {
+      "title": "Sadhanas",
+      "description": "Praticas para a mente, o corpo e a energia"
+    },
+    "philosophy": {
+      "title": "Filosofia",
+      "description": "Grandes perguntas e como pensar melhor"
     }
   },
   "games": {

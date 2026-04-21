@@ -16,6 +16,10 @@ export const colors = {
   physicsLight: '#a29bfe',
   chemistry: '#e17055',
   chemistryLight: '#fab1a0',
+  sadhana: '#d63384',
+  sadhanaLight: '#f48fb1',
+  philosophy: '#8e44ad',
+  philosophyLight: '#c39bd3',
 
   // Backgrounds
   background: '#fff9f0',

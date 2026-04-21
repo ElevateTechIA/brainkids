@@ -11,6 +11,9 @@
     "chemistry": "Chemistry",
     "profile": "Profile"
   },
+  "common": {
+    "comingSoon": "Coming soon"
+  },
   "home": {
     "welcome": "Hi, {name}!",
     "welcomeDefault": "Hi, Explorer!",
@@ -19,7 +22,8 @@
     "dailyChallenge": "Daily Challenge",
     "streak": "{count} days in a row!",
     "level": "Level {level}",
-    "xp": "{xp} XP"
+    "xp": "{xp} XP",
+    "advanced": "Advanced"
   },
   "subjects": {
     "reading": {
@@ -37,6 +41,14 @@
     "chemistry": {
       "title": "Chemistry",
       "description": "Elements, mixtures and reactions"
+    },
+    "sadhana": {
+      "title": "Sadhanas",
+      "description": "Practices for mind, body and energy"
+    },
+    "philosophy": {
+      "title": "Philosophy",
+      "description": "Big questions and how to think better"
     }
   },
   "games": {
