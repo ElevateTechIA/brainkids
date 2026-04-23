@@ -39,9 +39,11 @@ export default function ParentTokensPage() {
     try {
       const { url } = await postCheckoutSession(packageId, locale);
       if (url) window.location.href = url;
+      else throw new Error('No checkout URL returned');
     } catch (err) {
-      console.error(err);
-      alert(t('tokens.errorCheckout'));
+      console.error('[checkout]', err);
+      const detail = err instanceof Error ? err.message : String(err);
+      alert(`${t('tokens.errorCheckout')}\n\n${detail}`);
     } finally {
       setLoading(null);
     }
