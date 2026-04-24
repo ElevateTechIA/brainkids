@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { Box, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -22,14 +22,16 @@ export default function RewardCelebration({
   onComplete,
 }: RewardCelebrationProps) {
   const [playStar] = useSound('/sounds/star.ogg', { volume: 0.6 });
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
     if (!show) return;
     playStar();
 
-    // Fire confetti
     const duration = 2000;
     const end = Date.now() + duration;
+    let rafId = 0;
 
     const frame = () => {
       confetti({
@@ -48,17 +50,21 @@ export default function RewardCelebration({
       });
 
       if (Date.now() < end) {
-        requestAnimationFrame(frame);
+        rafId = requestAnimationFrame(frame);
       }
     };
-    frame();
+    rafId = requestAnimationFrame(frame);
 
     const timer = setTimeout(() => {
-      onComplete?.();
+      onCompleteRef.current?.();
     }, 3000);
 
-    return () => clearTimeout(timer);
-  }, [show, onComplete]);
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timer);
+      confetti.reset();
+    };
+  }, [show, playStar]);
 
   return (
     <AnimatePresence>
