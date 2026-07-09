@@ -197,6 +197,39 @@
       "roomNotFound": "Salle introuvable",
       "roomFull": "La salle est pleine",
       "gameAlreadyStarted": "La partie a deja commence"
+    },
+    "velocidadLineal": {
+      "title": "Vitesse Linéaire",
+      "description": "Vitesse, distance et temps",
+      "instruction": "Règle la vitesse de la voiture pour arriver juste à temps. Vitesse = distance ÷ temps.",
+      "controls": "Commandes",
+      "velocity": "Vitesse",
+      "distance": "Distance",
+      "targetTime": "Temps cible",
+      "estTime": "Temps estimé",
+      "go": "Partir !",
+      "reset": "Recommencer",
+      "predict": "À {v} m/s tu arriverais en {time} s",
+      "tooFast": "Trop vite ! Tu es arrivé en avance. Réduis la vitesse.",
+      "tooSlow": "Trop lent ! Tu es arrivé en retard. Augmente la vitesse.",
+      "winTitle": "Juste à temps !",
+      "lesson": "Vitesse = distance ÷ temps (m/s). La rapidité est sans direction ; la vitesse en a une."
+    },
+    "aceleracion": {
+      "title": "Accélération",
+      "description": "Bientôt"
+    },
+    "mru": {
+      "title": "Mouvement Uniforme",
+      "description": "Bientôt"
+    },
+    "caidaLibre": {
+      "title": "Chute Libre",
+      "description": "Bientôt"
+    },
+    "newton": {
+      "title": "Lois de Newton",
+      "description": "Bientôt"
     }
   },
   "auth": {
@@ -356,5 +389,23 @@
     "reflectionBody": "Les philosophes posent cette question depuis des milliers d'annees. Il n'y a pas de bonne reponse. L'important est de continuer a se poser la question.",
     "home": "Accueil",
     "again": "Recommencer"
+  },
+  "physicsCategories": {
+    "cinematica": {
+      "title": "Cinématique",
+      "description": "Comment les choses bougent"
+    },
+    "dinamica": {
+      "title": "Dynamique",
+      "description": "Forces : pourquoi ça bouge"
+    },
+    "energia": {
+      "title": "Énergie",
+      "description": "Travail et énergie"
+    },
+    "rotacion": {
+      "title": "Rotation",
+      "description": "Tourner et équilibre"
+    }
   }
 }

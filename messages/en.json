@@ -197,6 +197,39 @@
       "roomNotFound": "Room not found",
       "roomFull": "Room is full",
       "gameAlreadyStarted": "Game already started"
+    },
+    "velocidadLineal": {
+      "title": "Linear Velocity",
+      "description": "Speed, distance and time",
+      "instruction": "Set the car's speed to reach the finish right on time. Velocity = distance ÷ time.",
+      "controls": "Controls",
+      "velocity": "Velocity",
+      "distance": "Distance",
+      "targetTime": "Target time",
+      "estTime": "Est. time",
+      "go": "Go!",
+      "reset": "Reset",
+      "predict": "At {v} m/s you would arrive in {time} s",
+      "tooFast": "Too fast! You arrived early. Lower the speed.",
+      "tooSlow": "Too slow! You arrived late. Raise the speed.",
+      "winTitle": "Right on time!",
+      "lesson": "Velocity = distance ÷ time (m/s). Speed has no direction; velocity does."
+    },
+    "aceleracion": {
+      "title": "Acceleration",
+      "description": "Coming soon"
+    },
+    "mru": {
+      "title": "Uniform Motion",
+      "description": "Coming soon"
+    },
+    "caidaLibre": {
+      "title": "Free Fall",
+      "description": "Coming soon"
+    },
+    "newton": {
+      "title": "Newton's Laws",
+      "description": "Coming soon"
     }
   },
   "auth": {
@@ -356,5 +389,23 @@
     "reflectionBody": "Philosophers have been asking this question for thousands of years. There's no right answer. What matters is to keep asking.",
     "home": "Home",
     "again": "Again"
+  },
+  "physicsCategories": {
+    "cinematica": {
+      "title": "Kinematics",
+      "description": "How things move"
+    },
+    "dinamica": {
+      "title": "Dynamics",
+      "description": "Forces: why things move"
+    },
+    "energia": {
+      "title": "Energy",
+      "description": "Work and energy"
+    },
+    "rotacion": {
+      "title": "Rotation",
+      "description": "Spinning and balance"
+    }
   }
 }

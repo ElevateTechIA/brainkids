@@ -197,6 +197,39 @@
       "roomNotFound": "Sala nao encontrada",
       "roomFull": "A sala esta cheia",
       "gameAlreadyStarted": "O jogo ja comecou"
+    },
+    "velocidadLineal": {
+      "title": "Velocidade Linear",
+      "description": "Rapidez, distância e tempo",
+      "instruction": "Ajuste a velocidade do carro para chegar na hora certa. Velocidade = distância ÷ tempo.",
+      "controls": "Controles",
+      "velocity": "Velocidade",
+      "distance": "Distância",
+      "targetTime": "Tempo alvo",
+      "estTime": "Tempo estimado",
+      "go": "Partir!",
+      "reset": "Reiniciar",
+      "predict": "A {v} m/s você chegaria em {time} s",
+      "tooFast": "Rápido demais! Chegou cedo. Diminua a velocidade.",
+      "tooSlow": "Devagar demais! Chegou tarde. Aumente a velocidade.",
+      "winTitle": "Na hora certa!",
+      "lesson": "Velocidade = distância ÷ tempo (m/s). Rapidez não tem direção; velocidade tem."
+    },
+    "aceleracion": {
+      "title": "Aceleração",
+      "description": "Em breve"
+    },
+    "mru": {
+      "title": "Movimento Uniforme",
+      "description": "Em breve"
+    },
+    "caidaLibre": {
+      "title": "Queda Livre",
+      "description": "Em breve"
+    },
+    "newton": {
+      "title": "Leis de Newton",
+      "description": "Em breve"
     }
   },
   "auth": {
@@ -356,5 +389,23 @@
     "reflectionBody": "Os filosofos fazem essa pergunta ha milhares de anos. Nao ha uma resposta certa. O importante e continuar perguntando.",
     "home": "Inicio",
     "again": "De novo"
+  },
+  "physicsCategories": {
+    "cinematica": {
+      "title": "Cinemática",
+      "description": "Como as coisas se movem"
+    },
+    "dinamica": {
+      "title": "Dinâmica",
+      "description": "Forças: por que se movem"
+    },
+    "energia": {
+      "title": "Energia",
+      "description": "Trabalho e energia"
+    },
+    "rotacion": {
+      "title": "Rotação",
+      "description": "Girar e equilíbrio"
+    }
   }
 }

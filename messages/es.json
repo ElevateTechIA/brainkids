@@ -197,6 +197,39 @@
       "roomNotFound": "Sala no encontrada",
       "roomFull": "La sala esta llena",
       "gameAlreadyStarted": "El juego ya empezo"
+    },
+    "velocidadLineal": {
+      "title": "Velocidad Lineal",
+      "description": "Rapidez, distancia y tiempo",
+      "instruction": "Ajusta la velocidad del auto para llegar a la meta justo a tiempo. Velocidad = distancia ÷ tiempo.",
+      "controls": "Controles",
+      "velocity": "Velocidad",
+      "distance": "Distancia",
+      "targetTime": "Tiempo objetivo",
+      "estTime": "Tiempo estimado",
+      "go": "¡Arrancar!",
+      "reset": "Reiniciar",
+      "predict": "Con {v} m/s llegarías en {time} s",
+      "tooFast": "¡Muy rápido! Llegaste antes de tiempo. Baja la velocidad.",
+      "tooSlow": "¡Muy lento! Llegaste tarde. Sube la velocidad.",
+      "winTitle": "¡Justo a tiempo!",
+      "lesson": "Velocidad = distancia ÷ tiempo (m/s). La rapidez no tiene dirección; la velocidad sí."
+    },
+    "aceleracion": {
+      "title": "Aceleración",
+      "description": "Próximamente"
+    },
+    "mru": {
+      "title": "Movimiento Uniforme",
+      "description": "Próximamente"
+    },
+    "caidaLibre": {
+      "title": "Caída Libre",
+      "description": "Próximamente"
+    },
+    "newton": {
+      "title": "Leyes de Newton",
+      "description": "Próximamente"
     }
   },
   "auth": {
@@ -356,5 +389,23 @@
     "reflectionBody": "Los filosofos llevan miles de anios haciendose esta pregunta. No hay una respuesta correcta. Lo importante es seguir preguntando.",
     "home": "Inicio",
     "again": "Otra vez"
+  },
+  "physicsCategories": {
+    "cinematica": {
+      "title": "Cinemática",
+      "description": "Cómo se mueven las cosas"
+    },
+    "dinamica": {
+      "title": "Dinámica",
+      "description": "Fuerzas: por qué se mueven"
+    },
+    "energia": {
+      "title": "Energía",
+      "description": "Trabajo y energía"
+    },
+    "rotacion": {
+      "title": "Rotación",
+      "description": "Girar y equilibrio"
+    }
   }
 }
