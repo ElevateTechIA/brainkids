@@ -1,8 +1,9 @@
 import { colors } from '@/lib/theme/colors';
 
-export type TokenTier = 'copper' | 'silver' | 'gold';
+export type TokenTier = 'copper' | 'silver' | 'gold' | 'platinum';
 
 export function getTokenTier(balance: number): TokenTier {
+  if (balance >= 500) return 'platinum';
   if (balance >= 100) return 'gold';
   if (balance >= 10) return 'silver';
   return 'copper';
@@ -10,6 +11,8 @@ export function getTokenTier(balance: number): TokenTier {
 
 export function getTierColors(tier: TokenTier) {
   switch (tier) {
+    case 'platinum':
+      return { main: colors.tokenPlatinum, light: colors.tokenPlatinumLight };
     case 'gold':
       return { main: colors.tokenGold, light: colors.tokenGoldLight };
     case 'silver':

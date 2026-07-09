@@ -5,6 +5,7 @@ import confetti from 'canvas-confetti';
 import { Box, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import useSound from 'use-sound';
+import { useTheme } from '@/lib/theme/ThemeProvider';
 
 interface RewardCelebrationProps {
   show: boolean;
@@ -24,6 +25,8 @@ export default function RewardCelebration({
   const [playStar] = useSound('/sounds/star.ogg', { volume: 0.6 });
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
+  const { palette, themeName } = useTheme();
+  const isPlatinum = themeName === 'platinum';
 
   useEffect(() => {
     if (!show) return;
@@ -33,20 +36,24 @@ export default function RewardCelebration({
     const end = Date.now() + duration;
     let rafId = 0;
 
+    const colors = isPlatinum
+      ? ['#C3F54C', '#DCFA6E', '#C8B88A', '#9F9AAB', '#FFFFFF']
+      : ['#ffd93d', '#ff6b6b', '#4ecdc4', '#6c5ce7', '#00b894'];
+
     const frame = () => {
       confetti({
         particleCount: 3,
         angle: 60,
         spread: 55,
         origin: { x: 0, y: 0.7 },
-        colors: ['#ffd93d', '#ff6b6b', '#4ecdc4', '#6c5ce7', '#00b894'],
+        colors,
       });
       confetti({
         particleCount: 3,
         angle: 120,
         spread: 55,
         origin: { x: 1, y: 0.7 },
-        colors: ['#ffd93d', '#ff6b6b', '#4ecdc4', '#6c5ce7', '#00b894'],
+        colors,
       });
 
       if (Date.now() < end) {
@@ -64,7 +71,7 @@ export default function RewardCelebration({
       clearTimeout(timer);
       confetti.reset();
     };
-  }, [show, playStar]);
+  }, [show, playStar, isPlatinum]);
 
   return (
     <AnimatePresence>
@@ -81,6 +88,7 @@ export default function RewardCelebration({
             justifyContent: 'center',
             zIndex: 9999,
             pointerEvents: 'none',
+            background: isPlatinum ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)',
           }}
         >
           <motion.div
@@ -90,17 +98,32 @@ export default function RewardCelebration({
           >
             <Box
               sx={{
-                bgcolor: 'white',
-                borderRadius: 4,
+                bgcolor: palette.cardBg,
+                border: isPlatinum ? `1px solid ${palette.cardBorder}` : 'none',
+                borderRadius: isPlatinum ? 3 : 4,
                 p: 4,
                 textAlign: 'center',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+                minWidth: 280,
+                boxShadow: isPlatinum
+                  ? `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ${palette.cardBorder}, 0 0 40px ${palette.accent}33`
+                  : '0 20px 60px rgba(0,0,0,0.3)',
               }}
             >
-              <Typography variant="h2" sx={{ mb: 1 }}>
+              <Typography variant="h2" sx={{ mb: 1, fontSize: '2.8rem' }}>
                 {'⭐'.repeat(stars || 1)}
               </Typography>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
+              <Typography
+                variant="h3"
+                sx={{
+                  fontWeight: 700,
+                  color: palette.primary,
+                  mb: 1,
+                  fontFamily: isPlatinum
+                    ? 'var(--font-fraunces), serif'
+                    : 'var(--font-fredoka), sans-serif',
+                  letterSpacing: isPlatinum ? '-0.02em' : 'normal',
+                }}
+              >
                 {message}
               </Typography>
               {xpGained > 0 && (
@@ -111,7 +134,11 @@ export default function RewardCelebration({
                 >
                   <Typography
                     variant="h5"
-                    sx={{ color: '#ffd93d', fontWeight: 700 }}
+                    sx={{
+                      color: palette.accent,
+                      fontWeight: 800,
+                      filter: isPlatinum ? `drop-shadow(0 0 8px ${palette.accent})` : 'none',
+                    }}
                   >
                     +{xpGained} XP
                   </Typography>

@@ -39,7 +39,7 @@ export default function TokensCancelPage() {
             onClick={() => router.push(`/${locale}/parent/tokens`)}
             sx={{
               background: `linear-gradient(135deg, ${colors.primary}, ${colors.primaryLight})`,
-              borderRadius: 3,
+              borderRadius: 1.5,
               py: 1.5,
             }}
           >

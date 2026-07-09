@@ -4,11 +4,12 @@ export const TOKEN_RULES = {
   referrerReward: 5,
 } as const;
 
-export type ModuleId = 'sadhana' | 'philosophy';
+export type ModuleId = 'sadhana' | 'philosophy' | 'labyrinth';
 
 export const MODULE_COSTS: Record<ModuleId, number> = {
   sadhana: 20,
   philosophy: 20,
+  labyrinth: 25,
 };
 
 export const PACKAGES = [

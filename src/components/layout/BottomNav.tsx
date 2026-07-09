@@ -39,7 +39,14 @@ export default function BottomNav() {
 
   return (
     <Paper
-      sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        display: { xs: 'block', md: 'none' },
+      }}
       elevation={3}
     >
       <BottomNavigation

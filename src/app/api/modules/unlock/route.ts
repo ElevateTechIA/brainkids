@@ -3,7 +3,7 @@ import { FieldValue } from 'firebase-admin/firestore';
 import { adminDb, verifyIdToken } from '@/lib/firebase/admin';
 import { MODULE_COSTS, ModuleId } from '@/lib/tokens/config';
 
-const MODULE_IDS: ModuleId[] = ['sadhana', 'philosophy'];
+const MODULE_IDS: ModuleId[] = ['sadhana', 'philosophy', 'labyrinth'];
 
 export async function POST(req: NextRequest) {
   try {

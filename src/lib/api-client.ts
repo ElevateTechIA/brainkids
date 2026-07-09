@@ -40,7 +40,7 @@ export async function postCheckoutSession(packageId: string, locale: string) {
   return res.json() as Promise<{ url: string }>;
 }
 
-export async function postUnlock(moduleId: 'sadhana' | 'philosophy') {
+export async function postUnlock(moduleId: 'sadhana' | 'philosophy' | 'labyrinth') {
   const res = await authedFetch('/api/modules/unlock', {
     method: 'POST',
     body: JSON.stringify({ moduleId }),

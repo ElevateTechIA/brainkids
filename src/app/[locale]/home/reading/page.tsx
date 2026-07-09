@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Container, Typography, Stack } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import GameCard from '@/components/layout/GameCard';
@@ -43,22 +43,33 @@ export default function ReadingPage() {
         sx={{
           background: `linear-gradient(135deg, ${colors.reading}, ${colors.readingLight})`,
           color: 'white',
-          p: 3,
-          pb: 4,
-          borderRadius: '0 0 28px 28px',
+          px: { xs: 3, md: 5 },
+          py: { xs: 3, md: 4 },
+          pb: { xs: 4, md: 5 },
+          borderRadius: { xs: '0 0 28px 28px', md: '0 0 32px 32px' },
         }}
       >
-        <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-          <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            {t('subjects.reading.title')}
-          </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.9, mt: 0.5 }}>
-            {t('subjects.reading.description')}
-          </Typography>
-        </motion.div>
+        <Box sx={{ maxWidth: 1100, mx: 'auto', width: '100%' }}>
+          <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+            <Typography variant="h4" sx={{ fontWeight: 700, fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
+              {t('subjects.reading.title')}
+            </Typography>
+            <Typography variant="body1" sx={{ opacity: 0.9, mt: 0.5 }}>
+              {t('subjects.reading.description')}
+            </Typography>
+          </motion.div>
+        </Box>
       </Box>
 
-      <Container maxWidth="sm" sx={{ mt: 3 }}>
+      <Box
+        sx={{
+          mt: 3,
+          maxWidth: { xs: '100%', md: 1100 },
+          mx: 'auto',
+          width: '100%',
+          px: { xs: 3, md: 5 },
+        }}
+      >
         <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: 'text.primary' }}>
           {t('home.chooseGame', { defaultValue: 'Elige un juego' })}
         </Typography>
@@ -66,8 +77,12 @@ export default function ReadingPage() {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: 2,
+            gridTemplateColumns: {
+              xs: 'repeat(2, 1fr)',
+              sm: 'repeat(3, 1fr)',
+              md: 'repeat(4, 1fr)',
+            },
+            gap: { xs: 2, md: 2.5 },
           }}
         >
           {games.map((game, idx) => (
@@ -89,7 +104,7 @@ export default function ReadingPage() {
             </motion.div>
           ))}
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 }
