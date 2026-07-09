@@ -9,6 +9,9 @@
     "math": "Matem.",
     "physics": "Fisica",
     "chemistry": "Quimica",
+    "sadhana": "Sadhana",
+    "philosophy": "Filosofia",
+    "labyrinths": "Labirintos",
     "profile": "Perfil"
   },
   "common": {
@@ -24,7 +27,8 @@
     "level": "Nivel {level}",
     "xp": "{xp} XP",
     "advanced": "Avancado",
-    "tapToUnlock": "Toque para desbloquear"
+    "tapToUnlock": "Toque para desbloquear",
+    "menu": "Menu"
   },
   "subjects": {
     "reading": {
@@ -50,7 +54,30 @@
     "philosophy": {
       "title": "Filosofia",
       "description": "Grandes perguntas e como pensar melhor"
+    },
+    "labyrinths": {
+      "title": "Labirintos",
+      "description": "Escolha a entrada certa, lance a bola e ache o caminho"
     }
+  },
+  "labyrinths": {
+    "levelOf": "Labirinto {current} de {total}",
+    "difficulty": {
+      "easy": "Facil",
+      "medium": "Medio",
+      "hard": "Dificil"
+    },
+    "attemptsLeft": "{count, plural, =0 {Sem tentativas} one {1 tentativa restante} other {# tentativas restantes}}",
+    "won": "Voce achou o caminho!",
+    "stuck": "A bola travou!",
+    "out": "Caminho errado!",
+    "continue": "Tentar outra entrada",
+    "tryAgain": "Repetir labirinto",
+    "newLabyrinth": "Novo labirinto",
+    "nextLevel": "Proximo labirinto",
+    "selectLevel": "Niveis",
+    "lockedHint": "Desbloqueie os outros labirintos para continuar.",
+    "unlockCta": "Desbloquear labirintos"
   },
   "games": {
     "wordTrain": {
@@ -79,7 +106,22 @@
     },
     "rampLab": {
       "title": "Lab de Rampas",
-      "description": "Experimente com gravidade e atrito"
+      "description": "Experimente com gravidade e atrito",
+      "controls": "Controles",
+      "angle": "Angulo da rampa",
+      "friction": "Atrito",
+      "mass": "Massa da bola",
+      "launch": "Lancar",
+      "reset": "Reiniciar",
+      "speed": "Velocidade",
+      "distance": "Distancia",
+      "hit": "Na cesta!",
+      "short": "Quase! A bola parou antes de chegar. Tente menos atrito ou mais angulo.",
+      "stuck": "A bola nao se move! Ha atrito demais para esse angulo.",
+      "massFact": "A massa nao muda a velocidade da descida. Galileu descobriu isso!",
+      "surfaceIce": "Gelo",
+      "surfaceWood": "Madeira",
+      "surfaceSand": "Areia"
     },
     "catapult": {
       "title": "Desafio Catapulta",
@@ -91,7 +133,20 @@
     },
     "bridgeBuilder": {
       "title": "Construtor de Pontes",
-      "description": "Construa pontes resistentes"
+      "description": "Construa pontes resistentes",
+      "instruction": "Cada elemento sustenta a ponte. Trabalha em tração (esticado) ou compressão (esmagado)?",
+      "controls": "Monte sua ponte",
+      "tension": "Tração",
+      "compression": "Compressão",
+      "tensionHint": "esticado, como um cabo",
+      "compressionHint": "esmagado, como uma viga",
+      "test": "Testar ponte",
+      "testing": "Atravessando...",
+      "reset": "Reiniciar",
+      "assignAll": "Defina tração ou compressão nos 4 elementos antes de testar.",
+      "fail": "Quebrou no elemento {n}: a força estava no modo errado ali. Esse é o elo fraco. Corrija!",
+      "winTitle": "Ponte resistente!",
+      "lessonPath": "A força sempre busca um caminho até o chão. Os que sobem às torres puxam (tração); os que descem ao pilar empurram (compressão)."
     },
     "elementMatch": {
       "title": "Elementos Match",

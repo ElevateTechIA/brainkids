@@ -9,6 +9,9 @@
     "math": "Math",
     "physics": "Physics",
     "chemistry": "Chemistry",
+    "sadhana": "Sadhana",
+    "philosophy": "Philosophy",
+    "labyrinths": "Labyrinths",
     "profile": "Profile"
   },
   "common": {
@@ -24,7 +27,8 @@
     "level": "Level {level}",
     "xp": "{xp} XP",
     "advanced": "Advanced",
-    "tapToUnlock": "Tap to unlock"
+    "tapToUnlock": "Tap to unlock",
+    "menu": "Menu"
   },
   "subjects": {
     "reading": {
@@ -50,7 +54,30 @@
     "philosophy": {
       "title": "Philosophy",
       "description": "Big questions and how to think better"
+    },
+    "labyrinths": {
+      "title": "Labyrinths",
+      "description": "Pick the right entry, launch the ball, find the way"
     }
+  },
+  "labyrinths": {
+    "levelOf": "Labyrinth {current} of {total}",
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "attemptsLeft": "{count, plural, =0 {No attempts left} one {1 attempt left} other {# attempts left}}",
+    "won": "You found the way!",
+    "stuck": "The ball got stuck!",
+    "out": "Wrong path!",
+    "continue": "Try again",
+    "tryAgain": "Retry this maze",
+    "newLabyrinth": "New labyrinth",
+    "nextLevel": "Next labyrinth",
+    "selectLevel": "Levels",
+    "lockedHint": "Unlock the rest of the labyrinths to keep exploring.",
+    "unlockCta": "Unlock labyrinths"
   },
   "games": {
     "wordTrain": {
@@ -79,7 +106,22 @@
     },
     "rampLab": {
       "title": "Ramp Lab",
-      "description": "Experiment with gravity and friction"
+      "description": "Experiment with gravity and friction",
+      "controls": "Controls",
+      "angle": "Ramp angle",
+      "friction": "Friction",
+      "mass": "Ball mass",
+      "launch": "Launch",
+      "reset": "Reset",
+      "speed": "Speed",
+      "distance": "Distance",
+      "hit": "In the basket!",
+      "short": "So close! The ball stopped early. Try less friction or a steeper angle.",
+      "stuck": "The ball won't move! Too much friction for that angle.",
+      "massFact": "Mass doesn't change how fast it rolls down. Galileo discovered that!",
+      "surfaceIce": "Ice",
+      "surfaceWood": "Wood",
+      "surfaceSand": "Sand"
     },
     "catapult": {
       "title": "Catapult Challenge",
@@ -91,7 +133,20 @@
     },
     "bridgeBuilder": {
       "title": "Bridge Builder",
-      "description": "Build strong bridges"
+      "description": "Build strong bridges",
+      "instruction": "Each member holds the bridge up. Is it working in tension (stretched) or compression (squeezed)?",
+      "controls": "Build your bridge",
+      "tension": "Tension",
+      "compression": "Compression",
+      "tensionHint": "stretched, like a cable",
+      "compressionHint": "squeezed, like a beam",
+      "test": "Test bridge",
+      "testing": "Crossing...",
+      "reset": "Reset",
+      "assignAll": "Set tension or compression on all 4 members before testing.",
+      "fail": "It snapped at member {n}: the force was in the wrong mode there. That's the weak link. Fix it!",
+      "winTitle": "Strong bridge!",
+      "lessonPath": "Force always finds a path to the ground. Members going up to the towers pull (tension); members going down to the pier push (compression)."
     },
     "elementMatch": {
       "title": "Element Match",

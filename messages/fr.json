@@ -9,6 +9,9 @@
     "math": "Maths",
     "physics": "Physique",
     "chemistry": "Chimie",
+    "sadhana": "Sadhana",
+    "philosophy": "Philosophie",
+    "labyrinths": "Labyrinthes",
     "profile": "Profil"
   },
   "common": {
@@ -24,7 +27,8 @@
     "level": "Niveau {level}",
     "xp": "{xp} XP",
     "advanced": "Avance",
-    "tapToUnlock": "Touche pour debloquer"
+    "tapToUnlock": "Touche pour debloquer",
+    "menu": "Menu"
   },
   "subjects": {
     "reading": {
@@ -50,7 +54,30 @@
     "philosophy": {
       "title": "Philosophie",
       "description": "Grandes questions et l'art de mieux penser"
+    },
+    "labyrinths": {
+      "title": "Labyrinthes",
+      "description": "Choisis la bonne entree, lance la bille et trouve le chemin"
     }
+  },
+  "labyrinths": {
+    "levelOf": "Labyrinthe {current} sur {total}",
+    "difficulty": {
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    },
+    "attemptsLeft": "{count, plural, =0 {Plus d'essais} one {1 essai restant} other {# essais restants}}",
+    "won": "Tu as trouve le chemin !",
+    "stuck": "La bille est coincee !",
+    "out": "Mauvais chemin !",
+    "continue": "Essaye une autre entree",
+    "tryAgain": "Recommencer ce labyrinthe",
+    "newLabyrinth": "Nouveau labyrinthe",
+    "nextLevel": "Labyrinthe suivant",
+    "selectLevel": "Niveaux",
+    "lockedHint": "Debloque le reste des labyrinthes pour continuer.",
+    "unlockCta": "Debloquer les labyrinthes"
   },
   "games": {
     "wordTrain": {
@@ -79,7 +106,22 @@
     },
     "rampLab": {
       "title": "Labo de Rampes",
-      "description": "Experimente avec la gravite et le frottement"
+      "description": "Experimente avec la gravite et le frottement",
+      "controls": "Controles",
+      "angle": "Angle de la rampe",
+      "friction": "Frottement",
+      "mass": "Masse de la balle",
+      "launch": "Lancer",
+      "reset": "Recommencer",
+      "speed": "Vitesse",
+      "distance": "Distance",
+      "hit": "Dans le panier !",
+      "short": "Presque ! La balle s'est arretee avant. Essaie moins de frottement ou plus d'angle.",
+      "stuck": "La balle ne bouge pas ! Trop de frottement pour cet angle.",
+      "massFact": "La masse ne change pas la vitesse de descente. Galilee l'a decouvert !",
+      "surfaceIce": "Glace",
+      "surfaceWood": "Bois",
+      "surfaceSand": "Sable"
     },
     "catapult": {
       "title": "Defi Catapulte",
@@ -91,7 +133,20 @@
     },
     "bridgeBuilder": {
       "title": "Constructeur de Ponts",
-      "description": "Construis des ponts solides"
+      "description": "Construis des ponts solides",
+      "instruction": "Chaque élément soutient le pont. Il travaille en tension (étiré) ou en compression (écrasé)?",
+      "controls": "Construis ton pont",
+      "tension": "Tension",
+      "compression": "Compression",
+      "tensionHint": "étiré, comme un câble",
+      "compressionHint": "écrasé, comme une poutre",
+      "test": "Tester le pont",
+      "testing": "Traversée...",
+      "reset": "Recommencer",
+      "assignAll": "Choisis tension ou compression pour les 4 éléments avant de tester.",
+      "fail": "Rupture au maillon {n} : la force avait le mauvais mode. Voilà le maillon faible. Corrige !",
+      "winTitle": "Pont solide !",
+      "lessonPath": "La force cherche toujours un chemin vers le sol. Les éléments qui montent aux tours tirent (tension) ; ceux qui descendent au pilier poussent (compression)."
     },
     "elementMatch": {
       "title": "Elements Match",
