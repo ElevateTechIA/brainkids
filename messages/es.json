@@ -9,6 +9,9 @@
     "math": "Mates",
     "physics": "Fisica",
     "chemistry": "Quimica",
+    "sadhana": "Sadhana",
+    "philosophy": "Filosofia",
+    "labyrinths": "Laberintos",
     "profile": "Perfil"
   },
   "common": {
@@ -24,7 +27,8 @@
     "level": "Nivel {level}",
     "xp": "{xp} XP",
     "advanced": "Avanzado",
-    "tapToUnlock": "Toca para desbloquear"
+    "tapToUnlock": "Toca para desbloquear",
+    "menu": "Menu"
   },
   "subjects": {
     "reading": {
@@ -50,7 +54,30 @@
     "philosophy": {
       "title": "Filosofia",
       "description": "Grandes preguntas y como pensar mejor"
+    },
+    "labyrinths": {
+      "title": "Laberintos",
+      "description": "Elige la entrada correcta, lanza la pelota y encuentra el camino"
     }
+  },
+  "labyrinths": {
+    "levelOf": "Laberinto {current} de {total}",
+    "difficulty": {
+      "easy": "Facil",
+      "medium": "Medio",
+      "hard": "Dificil"
+    },
+    "attemptsLeft": "{count, plural, =0 {Sin intentos} one {1 intento restante} other {# intentos restantes}}",
+    "won": "Encontraste el camino!",
+    "stuck": "La pelota se atasco!",
+    "out": "Camino incorrecto!",
+    "continue": "Probar otra entrada",
+    "tryAgain": "Repetir laberinto",
+    "newLabyrinth": "Nuevo laberinto",
+    "nextLevel": "Siguiente laberinto",
+    "selectLevel": "Niveles",
+    "lockedHint": "Desbloquea el resto de laberintos para seguir explorando.",
+    "unlockCta": "Desbloquear laberintos"
   },
   "games": {
     "wordTrain": {
@@ -79,7 +106,22 @@
     },
     "rampLab": {
       "title": "Lab de Rampas",
-      "description": "Experimenta con gravedad y friccion"
+      "description": "Experimenta con gravedad y friccion",
+      "controls": "Controles",
+      "angle": "Angulo de la rampa",
+      "friction": "Friccion",
+      "mass": "Masa de la bola",
+      "launch": "Lanzar",
+      "reset": "Reiniciar",
+      "speed": "Velocidad",
+      "distance": "Distancia",
+      "hit": "En la canasta!",
+      "short": "Casi! La bola se detuvo antes de llegar. Prueba con menos friccion o mas angulo.",
+      "stuck": "La bola no se mueve! Hay demasiada friccion para ese angulo.",
+      "massFact": "La masa no cambia la velocidad de bajada. Galileo lo descubrio!",
+      "surfaceIce": "Hielo",
+      "surfaceWood": "Madera",
+      "surfaceSand": "Arena"
     },
     "catapult": {
       "title": "Desafio Catapulta",
@@ -91,7 +133,20 @@
     },
     "bridgeBuilder": {
       "title": "Constructor de Puentes",
-      "description": "Construye puentes resistentes"
+      "description": "Construye puentes resistentes",
+      "instruction": "Cada miembro sostiene el puente. ¿Trabaja en tensión (se estira) o en compresión (se aplasta)?",
+      "controls": "Arma tu puente",
+      "tension": "Tensión",
+      "compression": "Compresión",
+      "tensionHint": "se estira, como un cable",
+      "compressionHint": "se aplasta, como una viga",
+      "test": "Probar puente",
+      "testing": "Cruzando...",
+      "reset": "Reiniciar",
+      "assignAll": "Asigna tensión o compresión a los 4 miembros antes de probar.",
+      "fail": "Se rompió en el miembro {n}: ahí la fuerza tenía el modo equivocado. Ese es el eslabón débil. ¡Corrígelo!",
+      "winTitle": "¡Puente resistente!",
+      "lessonPath": "La fuerza siempre busca un camino al suelo. Los que suben a las torres jalan (tensión); los que bajan al pilar empujan (compresión)."
     },
     "elementMatch": {
       "title": "Elementos Match",
