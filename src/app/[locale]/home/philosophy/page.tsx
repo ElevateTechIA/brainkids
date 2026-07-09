@@ -96,7 +96,7 @@ export default function PhilosophyPage() {
                   onClick={() => setStage('name')}
                   sx={{
                     background: `linear-gradient(135deg, ${colors.philosophy}, ${colors.philosophyLight})`,
-                    borderRadius: 3,
+                    borderRadius: 1.5,
                     py: 1.5,
                     fontWeight: 800,
                   }}
@@ -113,7 +113,7 @@ export default function PhilosophyPage() {
                 <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700, textAlign: 'center' }}>
                   {t('questionOf', { current: stepIndex + 1, total: STEPS.length })}
                 </Typography>
-                <Card sx={{ p: 3, borderRadius: 3, bgcolor: `${colors.philosophy}08`, border: `2px solid ${colors.philosophy}22`, boxShadow: 'none' }}>
+                <Card sx={{ p: 3, borderRadius: 2, bgcolor: `${colors.philosophy}08`, border: `2px solid ${colors.philosophy}22`, boxShadow: 'none' }}>
                   <Typography variant="h6" sx={{ fontWeight: 700, color: colors.philosophy, mb: 1 }}>
                     {t(`q.${stage}.title`)}
                   </Typography>
@@ -132,7 +132,7 @@ export default function PhilosophyPage() {
                         size="large"
                         onClick={() => handleAnswer(stage as Step, opt)}
                         sx={{
-                          borderRadius: 3,
+                          borderRadius: 1.5,
                           py: 1.5,
                           justifyContent: 'flex-start',
                           fontWeight: 700,
@@ -162,7 +162,7 @@ export default function PhilosophyPage() {
                 <Typography variant="h5" sx={{ fontWeight: 800, color: colors.philosophy }}>
                   {t('reflectionTitle')}
                 </Typography>
-                <Card sx={{ p: 3, borderRadius: 3, bgcolor: `${colors.philosophy}08`, border: `2px solid ${colors.philosophy}33`, boxShadow: 'none' }}>
+                <Card sx={{ p: 3, borderRadius: 2, bgcolor: `${colors.philosophy}08`, border: `2px solid ${colors.philosophy}33`, boxShadow: 'none' }}>
                   <Typography variant="body1" sx={{ color: 'text.primary', fontStyle: 'italic' }}>
                     &ldquo;{t('reflectionQuote')}&rdquo;
                   </Typography>
@@ -179,7 +179,7 @@ export default function PhilosophyPage() {
                     fullWidth
                     variant="outlined"
                     onClick={() => router.push(`/${locale}/home`)}
-                    sx={{ borderRadius: 3, borderColor: colors.philosophy, color: colors.philosophy }}
+                    sx={{ borderRadius: 1.5, borderColor: colors.philosophy, color: colors.philosophy }}
                   >
                     {t('home')}
                   </Button>
@@ -191,7 +191,7 @@ export default function PhilosophyPage() {
                       setAnswered({ name: null, body: null, feelings: null, thoughts: null });
                       setStage('intro');
                     }}
-                    sx={{ background: `linear-gradient(135deg, ${colors.philosophy}, ${colors.philosophyLight})`, borderRadius: 3 }}
+                    sx={{ background: `linear-gradient(135deg, ${colors.philosophy}, ${colors.philosophyLight})`, borderRadius: 1.5 }}
                   >
                     {t('again')}
                   </Button>

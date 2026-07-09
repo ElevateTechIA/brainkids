@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Container, Typography, Chip, Stack } from '@mui/material';
+import { Box, Typography, Chip, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import SubjectCard from '@/components/layout/SubjectCard';
@@ -14,16 +14,20 @@ import BiotechRoundedIcon from '@mui/icons-material/BiotechRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
 import SelfImprovementRoundedIcon from '@mui/icons-material/SelfImprovementRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
+import ExploreRoundedIcon from '@mui/icons-material/ExploreRounded';
 import { useEffect, useState } from 'react';
 import { useUnlocks } from '@/lib/hooks/useTokens';
 import { MODULE_COSTS, ModuleId } from '@/lib/tokens/config';
 import TokenBadge from '@/components/tokens/TokenBadge';
+import { useTheme } from '@/lib/theme/ThemeProvider';
 
 export default function DashboardPage() {
   const t = useTranslations();
   const { displayName, xp, level, streak, updateStreak } = usePlayerStore();
   const unlocks = useUnlocks();
   const [unlockTarget, setUnlockTarget] = useState<{ id: ModuleId; title: string; color: string } | null>(null);
+  const { themeName } = useTheme();
+  const isPlatinum = themeName === 'platinum';
 
   useEffect(() => {
     updateStreak();
@@ -37,13 +41,25 @@ export default function DashboardPage() {
         sx={{
           background: `linear-gradient(135deg, ${colors.primary}, ${colors.primaryLight})`,
           color: 'white',
-          p: 3,
-          pb: 4,
-          borderRadius: '0 0 28px 28px',
+          px: { xs: 3, md: 5 },
+          py: { xs: 3, md: 4 },
+          pb: { xs: 4, md: 5 },
+          borderRadius: { xs: '0 0 28px 28px', md: '0 0 32px 32px' },
         }}
       >
         <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-          <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5, pr: 6 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              mb: 0.5,
+              pr: 6,
+              fontFamily: isPlatinum
+                ? 'var(--font-fraunces), serif'
+                : 'var(--font-fredoka), sans-serif',
+              letterSpacing: isPlatinum ? '-0.02em' : 'normal',
+            }}
+          >
             {name ? t('home.welcome', { name }) : t('home.welcomeDefault')}
           </Typography>
           <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap', gap: 1 }}>
@@ -68,12 +84,40 @@ export default function DashboardPage() {
         </motion.div>
       </Box>
 
-      <Container maxWidth="sm" sx={{ mt: -2, position: 'relative', zIndex: 1 }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, mt: 3, color: 'text.primary' }}>
+      <Box
+        sx={{
+          mt: -2,
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: { xs: '100%', md: 1100 },
+          mx: 'auto',
+          width: '100%',
+          px: { xs: 3, md: 5 },
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+            mb: 2,
+            mt: 3,
+            color: 'text.primary',
+            fontFamily: isPlatinum
+              ? 'var(--font-fraunces), serif'
+              : 'var(--font-fredoka), sans-serif',
+            letterSpacing: isPlatinum ? '-0.015em' : 'normal',
+          }}
+        >
           {t('home.chooseSubject')}
         </Typography>
 
-        <Stack spacing={2.5}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            gap: { xs: 2.5, md: 3 },
+          }}
+        >
           <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
             <SubjectCard
               title={t('subjects.reading.title')}
@@ -126,10 +170,43 @@ export default function DashboardPage() {
             />
           </motion.div>
 
-          <Typography variant="h6" sx={{ fontWeight: 700, mt: 2, mb: 0.5, color: 'text.primary' }}>
-            {t('home.advanced')}
-          </Typography>
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.45 }}>
+            <SubjectCard
+              title={t('subjects.labyrinths.title')}
+              description={t('subjects.labyrinths.description')}
+              icon={<ExploreRoundedIcon fontSize="large" />}
+              color={colors.labyrinth}
+              colorLight={colors.labyrinthLight}
+              path="/labyrinths"
+              gamesCount={5}
+              progress={0}
+            />
+          </motion.div>
+        </Box>
 
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+            mt: 4,
+            mb: 2,
+            color: 'text.primary',
+            fontFamily: isPlatinum
+              ? 'var(--font-fraunces), serif'
+              : 'var(--font-fredoka), sans-serif',
+            letterSpacing: isPlatinum ? '-0.015em' : 'normal',
+          }}
+        >
+          {t('home.advanced')}
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            gap: { xs: 2.5, md: 3 },
+          }}
+        >
           <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
             <SubjectCard
               title={t('subjects.sadhana.title')}
@@ -161,8 +238,8 @@ export default function DashboardPage() {
               onLockedClick={() => setUnlockTarget({ id: 'philosophy', title: t('subjects.philosophy.title'), color: colors.philosophy })}
             />
           </motion.div>
-        </Stack>
-      </Container>
+        </Box>
+      </Box>
 
       <UnlockModuleModal
         open={unlockTarget !== null}

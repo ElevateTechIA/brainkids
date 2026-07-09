@@ -84,7 +84,7 @@ export default function ShareAppModal({ open, onClose }: Props) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
+    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
       <DialogContent sx={{ position: 'relative', p: 3 }}>
         <IconButton
           onClick={onClose}
@@ -104,7 +104,7 @@ export default function ShareAppModal({ open, onClose }: Props) {
           <Box
             sx={{
               p: 2,
-              borderRadius: 3,
+              borderRadius: 2,
               bgcolor: 'white',
               boxShadow: `0 4px 16px ${colors.primary}22`,
               border: `2px solid ${colors.primary}22`,
@@ -126,7 +126,7 @@ export default function ShareAppModal({ open, onClose }: Props) {
             value={shareUrl}
             fullWidth
             size="small"
-            InputProps={{ readOnly: true, sx: { borderRadius: 3, fontSize: '0.85rem' } }}
+            InputProps={{ readOnly: true, sx: { borderRadius: 1.5, fontSize: '0.85rem' } }}
             onClick={(e) => (e.target as HTMLInputElement).select?.()}
           />
 
@@ -136,7 +136,7 @@ export default function ShareAppModal({ open, onClose }: Props) {
               variant="outlined"
               startIcon={<ContentCopyRoundedIcon />}
               onClick={handleCopy}
-              sx={{ borderRadius: 3, borderColor: colors.primary, color: colors.primary }}
+              sx={{ borderRadius: 1.5, borderColor: colors.primary, color: colors.primary }}
             >
               {copied ? t('copied') : t('copy')}
             </Button>
@@ -146,7 +146,7 @@ export default function ShareAppModal({ open, onClose }: Props) {
               startIcon={<IosShareRoundedIcon />}
               onClick={handleNativeShare}
               sx={{
-                borderRadius: 3,
+                borderRadius: 1.5,
                 background: `linear-gradient(135deg, ${colors.primary}, ${colors.primaryLight})`,
               }}
             >

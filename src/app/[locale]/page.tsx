@@ -173,7 +173,7 @@ export default function LoginPage() {
               maxWidth: 380,
               mx: 'auto',
               bgcolor: 'white',
-              borderRadius: 4,
+              borderRadius: 2,
               p: 3,
               boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
             }}
@@ -196,7 +196,7 @@ export default function LoginPage() {
                   onChange={(e) => setName(e.target.value)}
                   fullWidth
                   size="medium"
-                  sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+                  sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1.5 } }}
                 />
               )}
               <TextField
@@ -207,7 +207,7 @@ export default function LoginPage() {
                 required
                 fullWidth
                 size="medium"
-                sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1.5 } }}
               />
               <TextField
                 label={t('password')}
@@ -217,7 +217,7 @@ export default function LoginPage() {
                 required
                 fullWidth
                 size="medium"
-                sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1.5 } }}
               />
 
               <Button

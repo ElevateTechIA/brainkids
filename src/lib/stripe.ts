@@ -11,9 +11,8 @@ export function getStripe(): Stripe {
 }
 
 export function getAppUrl(): string {
-  return (
+  const url =
     process.env.NEXT_PUBLIC_APP_URL ||
-    process.env.VERCEL_URL ||
-    'http://localhost:3000'
-  ).replace(/\/$/, '');
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+  return url.replace(/\/$/, '');
 }

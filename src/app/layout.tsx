@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { Fredoka, Nunito } from 'next/font/google';
+import { Fredoka, Nunito, Fraunces } from 'next/font/google';
+import { ThemeAntiFlashScript } from '@/lib/theme/ThemeProvider';
 import './globals.css';
 
 const fredoka = Fredoka({
@@ -12,6 +13,13 @@ const nunito = Nunito({
   subsets: ['latin'],
   variable: '--font-nunito',
   weight: ['400', '600', '700', '800'],
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-fraunces',
+  weight: ['400', '600', '700', '900'],
+  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
@@ -39,9 +47,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${fredoka.variable} ${nunito.variable}`}>
+    <html
+      lang="es"
+      className={`${fredoka.variable} ${nunito.variable} ${fraunces.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <meta name="theme-color" content="#0a6375" />
+        <ThemeAntiFlashScript />
       </head>
       <body style={{ margin: 0 }}>{children}</body>
     </html>

@@ -115,7 +115,7 @@ export default function UnlockModuleModal({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
+    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
       <DialogContent sx={{ position: 'relative', p: 3 }}>
         <IconButton onClick={onClose} sx={{ position: 'absolute', top: 8, right: 8 }}>
           <CloseRoundedIcon />
@@ -137,7 +137,7 @@ export default function UnlockModuleModal({
               sx={{
                 width: '100%',
                 bgcolor: `${moduleColor}11`,
-                borderRadius: 3,
+                borderRadius: 2,
                 p: 2.5,
                 textAlign: 'center',
               }}
@@ -150,7 +150,7 @@ export default function UnlockModuleModal({
                 onChange={(e) => setInput(e.target.value.replace(/\D/g, '').slice(0, 3))}
                 autoFocus
                 inputProps={{ inputMode: 'numeric', style: { textAlign: 'center', fontSize: '1.4rem', fontWeight: 700 } }}
-                sx={{ width: 100, '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+                sx={{ width: 100, '& .MuiOutlinedInput-root': { borderRadius: 1.5 } }}
               />
               {gateError && (
                 <Typography variant="caption" sx={{ color: colors.error, display: 'block', mt: 1 }}>
@@ -161,7 +161,7 @@ export default function UnlockModuleModal({
                 type="submit"
                 variant="contained"
                 fullWidth
-                sx={{ mt: 2, borderRadius: 3, bgcolor: moduleColor, '&:hover': { bgcolor: moduleColor } }}
+                sx={{ mt: 2, borderRadius: 1.5, bgcolor: moduleColor, '&:hover': { bgcolor: moduleColor } }}
               >
                 {t('unlock.gateContinue')}
               </Button>
@@ -179,7 +179,7 @@ export default function UnlockModuleModal({
               sx={{
                 width: '100%',
                 bgcolor: `${moduleColor}11`,
-                borderRadius: 3,
+                borderRadius: 2,
                 p: 2.5,
               }}
             >
@@ -220,7 +220,7 @@ export default function UnlockModuleModal({
                 fullWidth
                 variant="outlined"
                 onClick={onClose}
-                sx={{ borderRadius: 3 }}
+                sx={{ borderRadius: 1.5 }}
               >
                 {t('unlock.cancel')}
               </Button>
@@ -230,7 +230,7 @@ export default function UnlockModuleModal({
                   variant="contained"
                   disabled={submitting}
                   onClick={handleConfirm}
-                  sx={{ borderRadius: 3, bgcolor: moduleColor, '&:hover': { bgcolor: moduleColor } }}
+                  sx={{ borderRadius: 1.5, bgcolor: moduleColor, '&:hover': { bgcolor: moduleColor } }}
                 >
                   {submitting ? '...' : t('unlock.unlock')}
                 </Button>
@@ -240,7 +240,7 @@ export default function UnlockModuleModal({
                   variant="contained"
                   onClick={() => router.push(`/${locale}/parent/tokens`)}
                   sx={{
-                    borderRadius: 3,
+                    borderRadius: 1.5,
                     background: `linear-gradient(135deg, ${colors.primary}, ${colors.primaryLight})`,
                   }}
                 >
@@ -270,14 +270,14 @@ export default function UnlockModuleModal({
                 variant="contained"
                 onClick={() => router.push(`/${locale}/parent/tokens`)}
                 sx={{
-                  borderRadius: 3,
+                  borderRadius: 1.5,
                   background: `linear-gradient(135deg, ${colors.primary}, ${colors.primaryLight})`,
                 }}
               >
                 {t('unlock.buyTokens')}
               </Button>
             ) : (
-              <Button fullWidth variant="contained" onClick={onClose} sx={{ borderRadius: 3, bgcolor: moduleColor, '&:hover': { bgcolor: moduleColor } }}>
+              <Button fullWidth variant="contained" onClick={onClose} sx={{ borderRadius: 1.5, bgcolor: moduleColor, '&:hover': { bgcolor: moduleColor } }}>
                 {t('unlock.close')}
               </Button>
             )}

@@ -111,7 +111,7 @@ export default function SadhanaPage() {
                   onClick={() => setStage('practice')}
                   sx={{
                     background: `linear-gradient(135deg, ${colors.sadhana}, ${colors.sadhanaLight})`,
-                    borderRadius: 3,
+                    borderRadius: 1.5,
                     py: 1.5,
                     fontWeight: 800,
                   }}
@@ -206,7 +206,7 @@ export default function SadhanaPage() {
                     fullWidth
                     variant="outlined"
                     onClick={() => router.push(`/${locale}/home`)}
-                    sx={{ borderRadius: 3, borderColor: colors.sadhana, color: colors.sadhana }}
+                    sx={{ borderRadius: 1.5, borderColor: colors.sadhana, color: colors.sadhana }}
                   >
                     {t('home')}
                   </Button>
@@ -220,7 +220,7 @@ export default function SadhanaPage() {
                     }}
                     sx={{
                       background: `linear-gradient(135deg, ${colors.sadhana}, ${colors.sadhanaLight})`,
-                      borderRadius: 3,
+                      borderRadius: 1.5,
                     }}
                   >
                     {t('again')}

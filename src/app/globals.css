@@ -1,26 +1,146 @@
 @import "tailwindcss";
 
+/* -------- Default theme tokens (Candy Light) --------
+ * SSR baseline: these apply on the very first paint.
+ * The inline anti-flash <script> in <head> may override at runtime
+ * based on the user's stored preference (Candy/Platinum × Light/Dark).
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --theme-background: #fff9f0;
+  --theme-card-bg: #ffffff;
+  --theme-card-bg-hover: #fffaf5;
+  --theme-card-border: rgba(10, 99, 117, 0.12);
+
+  --theme-primary: #0a6375;
+  --theme-primary-light: #4ecdc4;
+  --theme-primary-dark: #074a58;
+  --theme-primary-bg: rgba(10, 99, 117, 0.08);
+  --theme-primary-border: rgba(10, 99, 117, 0.2);
+
+  --theme-accent: #ffd93d;
+  --theme-accent-light: #ffe57f;
+  --theme-accent-dark: #f0c400;
+  --theme-accent-hover: #fcd116;
+
+  --theme-premium: #d4af37;
+  --theme-premium-light: #f5d76e;
+  --theme-premium-dark: #a88a25;
+
+  --theme-metallic: #a8adb4;
+  --theme-metallic-light: #d4d7dc;
+
+  --theme-secondary: #ff6b6b;
+  --theme-secondary-light: #ff8e8e;
+
+  --theme-reading: #00b894;
+  --theme-reading-light: #55efc4;
+  --theme-math: #0984e3;
+  --theme-math-light: #74b9ff;
+  --theme-physics: #6c5ce7;
+  --theme-physics-light: #a29bfe;
+  --theme-chemistry: #e17055;
+  --theme-chemistry-light: #fab1a0;
+  --theme-sadhana: #d63384;
+  --theme-sadhana-light: #f48fb1;
+  --theme-philosophy: #8e44ad;
+  --theme-philosophy-light: #c39bd3;
+
+  --theme-gradient-from: #0a6375;
+  --theme-gradient-via: #2d8a99;
+  --theme-gradient-to: #4ecdc4;
+  --theme-overlay-from: rgba(10, 99, 117, 0.85);
+  --theme-overlay-to: rgba(78, 205, 196, 0.75);
+
+  --theme-token-copper: #cd7f32;
+  --theme-token-copper-light: #e4a668;
+  --theme-token-silver: #a8adb4;
+  --theme-token-silver-light: #d4d7dc;
+  --theme-token-gold: #d4af37;
+  --theme-token-gold-light: #f5d76e;
+  --theme-token-platinum: #7570a0;
+  --theme-token-platinum-light: #b8b2c7;
+
+  --theme-text-primary: #2d3436;
+  --theme-text-secondary: #636e72;
+  --theme-text-muted: #b2bec3;
+
+  --theme-success: #00b894;
+  --theme-warning: #ffd93d;
+  --theme-error: #ff6b6b;
+
+  --background: var(--theme-background);
+  --foreground: var(--theme-text-primary);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-fredoka);
+  --font-serif: var(--font-fraunces);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--theme-background, #fff9f0);
+  color: var(--theme-text-primary, #2d3436);
+  font-family: var(--font-nunito), "Nunito", "Roboto", Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth color transitions across the app on theme change */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
+}
+
+/* Disable transitions on transform/opacity/etc. used by animations */
+[data-mui-internal-clone-element],
+.MuiBackdrop-root,
+.MuiDrawer-paper,
+[class*="MuiCircularProgress"] {
+  transition: none;
+}
+
+/* ---------- Platinum theme overrides ---------- */
+:root[data-theme='platinum'] h1,
+:root[data-theme='platinum'] h2,
+:root[data-theme='platinum'] h3 {
+  font-family: var(--font-fraunces), "Fraunces", "Georgia", serif;
+  letter-spacing: -0.025em;
+}
+
+:root[data-theme='platinum'] {
+  /* Slightly tighter UI rhythm in Platinum */
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+
+/* Headline helper for the big balance-style numbers (Robinhood vibe) */
+.platinum-display {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* Pill button style helper */
+.pill-cta {
+  border-radius: 999px !important;
+  padding: 12px 28px !important;
+  font-weight: 700 !important;
+}
+
+/* Subtle metallic shine for premium cards */
+.metallic-shine {
+  background-image: linear-gradient(
+    135deg,
+    var(--theme-card-bg) 0%,
+    var(--theme-card-bg-hover) 50%,
+    var(--theme-card-bg) 100%
+  );
+}
+
+/* Glow effect for accent lines (charts, progress bars in Platinum) */
+:root[data-theme='platinum'] .accent-glow {
+  filter: drop-shadow(0 0 6px var(--theme-accent));
 }
